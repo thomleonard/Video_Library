@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TV Show search page</title>
+</head>
+<body>
+    <div id="header">Welcome to the TV show latest magnet search engine</div>
+    <div id="content">
+        <p> </p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Seach">
+        </form>
+    </div>
+</body>
+</html>
