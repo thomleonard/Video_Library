@@ -9,8 +9,8 @@
         <p> </p>
         <form action="" method="POST">
             {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Seach">
+            TV Show title: {{ form.name }}
+            <input type="submit" value="Add" name="_add"></td>
         </form>
     </div>
 </body>

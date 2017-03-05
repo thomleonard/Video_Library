@@ -1,4 +1,4 @@
 from django import forms
 
 class SearchName(forms.Form):
-    TV_Show_title = forms.CharField(max_length=100)
+    name = forms.CharField(max_length=100, help_text="Please enter the title of the TV show.")
