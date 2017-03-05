@@ -17,11 +17,9 @@ class TVShow(models.Model):
         """
         add a new TV show to the database.
         """
-        print 'here'
         self.title = title
         self.current_season = 1
         self.last_seen_episode = 1
         self.is_next_episode_available = True
         self.update_date = timezone.now()
-        print 'title set'
         self.save()
