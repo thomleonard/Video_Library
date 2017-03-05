@@ -10,7 +10,12 @@
         <form action="" method="POST">
             {% csrf_token %}
             TV Show title: {{ form.name }}
-            <input type="submit" value="Add" name="_add"></td>
+            <input type="submit" value="Search" name="_search">
+        </form>
+        <p> </p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit", value="Clean database", name='_clean'>
         </form>
     </div>
 </body>
