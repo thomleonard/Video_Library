@@ -4,7 +4,7 @@
     <title>TV Show search page</title>
 </head>
 <body>
-    <div id="header">Welcome to the TV show latest magnet search engine</div>
+    <h1>Welcome to the TV show search engine</h1>
     <div id="content">
         <p> </p>
         <form action="" method="POST">
@@ -18,5 +18,25 @@
             <input type="submit", value="Clean database", name='_clean'>
         </form>
     </div>
+
+    <p> </p>
+    <p> </p>
+
+    {% if titles %}
+        <div id="header">Your TV shows library</div>
+        <div id="content">
+
+            <ul>
+            {% for title in titles %}
+                <li>
+                    {{ title }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div id="header">Your library is empty</div>
+    {% endif %}
+
 </body>
 </html>

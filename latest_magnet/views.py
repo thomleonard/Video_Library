@@ -5,7 +5,7 @@ from .models import TVShow
 
 def search(request):
     """
-    TV Show search page
+    TV show search page
     """
     if request.method == 'POST':
         # POST request
@@ -28,11 +28,15 @@ def search(request):
         pass
     form = SearchName()
 
-    print 'len', len(TVShow.objects.all())
+    # print 'len', len(TVShow.objects.all())
     # print 'get', TVShow.objects.get(title='yo')
 
     # instance = SomeModel.objects.get(id=id)
     # instance.delete()
+
+    # create the library
+    titles = []
     for tvshow in TVShow.objects.order_by('-update_date'):
-        print tvshow.update_date, tvshow.title
-    return render(request, 'latest_magnet/search.html', {'form': form})
+        titles.append(tvshow.title)
+
+    return render(request, 'latest_magnet/search.html', {'form': form, 'titles': titles})
