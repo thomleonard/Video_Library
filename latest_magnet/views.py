@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import SearchName
 from .models import TVShow
 
 def search(request):
     """
-    TV show search page
+    TV show library and search page
     """
     if request.method == 'POST':
         # POST request
@@ -22,17 +22,12 @@ def search(request):
                 if not TVShow.objects.filter(title=title).exists():
                     tvshow = TVShow()
                     tvshow.add_new(title)
-    
+                else:
+                    tvshow = TVShow.objects.get(title=title)
+                return redirect('/latest_magnet/tvshow_%s_page' % tvshow.url)
 
     else:
-        pass
-    form = SearchName()
-
-    # print 'len', len(TVShow.objects.all())
-    # print 'get', TVShow.objects.get(title='yo')
-
-    # instance = SomeModel.objects.get(id=id)
-    # instance.delete()
+        form = SearchName()
 
     # create the library
     titles = []
@@ -40,3 +35,10 @@ def search(request):
         titles.append(tvshow.title)
 
     return render(request, 'latest_magnet/search.html', {'form': form, 'titles': titles})
+
+def tvshow_page(request, title):
+    """
+    page for a given TV Show.
+    """
+    tvshow = TVShow.objects.get(title=title)
+    return render(request, 'latest_magnet/tvshow_page.html', {'tvshow': tvshow})
