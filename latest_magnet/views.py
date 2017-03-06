@@ -3,12 +3,11 @@ from django.shortcuts import render, redirect
 from .forms import SearchName
 from .models import TVShow
 
-def search(request):
+def library(request):
     """
     TV show library and search page
     """
     if request.method == 'POST':
-        # POST request
         if '_clean' in request.POST:
             # clean the database
             for tvshow in TVShow.objects.all():
@@ -34,11 +33,15 @@ def search(request):
     for tvshow in TVShow.objects.order_by('-update_date'):
         titles.append(tvshow.title)
 
-    return render(request, 'latest_magnet/search.html', {'form': form, 'titles': titles})
+    return render(request, 'latest_magnet/library.html', {'form': form, 'titles': titles})
 
 def tvshow_page(request, title):
     """
     page for a given TV Show.
     """
     tvshow = TVShow.objects.get(title=title)
+    if request.method == 'POST':
+        if '_to_library' in request.POST:
+            # redirect to library page
+            return redirect('/latest_magnet')
     return render(request, 'latest_magnet/tvshow_page.html', {'tvshow': tvshow})

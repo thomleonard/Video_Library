@@ -8,6 +8,12 @@
     <div id="content">
         <p> </p>
         here are the tv show details
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit", value="Back to library", name='_to_library'>
+        </form>
+
     </div>
 </body>
 </html>
