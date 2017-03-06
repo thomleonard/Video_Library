@@ -22,13 +22,13 @@
     <p> </p>
     <p> </p>
 
-    {% if titles %}
+    {% if is_library_empty %}
         <div id="header">Your TV shows library</div>
         <div id="content">
             <ul>
-            {% for title in titles %}
+            {% for tvshow in tvshows %}
                 <li>
-                    {{ title }}
+                    <a href="/latest_magnet/tvshow_{{ tvshow.url }}_page/">{{ tvshow.title }}</a>
                 </li>
             {% endfor %}
             </ul>

@@ -26,21 +26,22 @@ def library(request):
                     tvshow = TVShow.objects.get(title=title)
                 return redirect('/latest_magnet/tvshow_%s_page' % tvshow.url)
 
-    else:
-        form = SearchName()
+    form = SearchName()
 
     # create the library
-    titles = []
-    for tvshow in TVShow.objects.order_by('-update_date'):
-        titles.append(tvshow.title)
+    update_ordered_tvshows = TVShow.objects.order_by('-update_date')
+    is_library_empty = len(update_ordered_tvshows) > 0
 
-    return render(request, 'latest_magnet/library.html', {'form': form, 'titles': titles})
+    return render(request, 'latest_magnet/library.html', 
+        {'form': form, 
+         'tvshows': update_ordered_tvshows,
+         'is_library_empty': is_library_empty})
 
-def tvshow_page(request, title):
+def tvshow_page(request, title_url):
     """
     page for a given TV Show.
     """
-    tvshow = TVShow.objects.get(title=title)
+    tvshow = TVShow.objects.get(url=title_url)
     if request.method == 'POST':
         if '_to_library' in request.POST:
             # redirect to library page
