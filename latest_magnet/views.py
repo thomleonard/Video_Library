@@ -16,8 +16,9 @@ def library(request):
             form = SearchName(request.POST)
             if form.is_valid():
                 title = form['name'].value()
+                title = title.lower() # convert to lower case
                 # if the TV show is not already in the database
-                # add it
+                # add it otherwise get the existing one
                 if not TVShow.objects.filter(title=title).exists():
                     tvshow = TVShow()
                     tvshow.add_new(title)
