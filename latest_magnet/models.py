@@ -20,6 +20,12 @@ class TVShow(models.Model):
         """
         self.title = title.lower() # title must be only lower case
         self.url = title_to_url(title)
+        self.update_tvshow()
+
+    def update_tvshow(self):
+        """
+        update a TV show of the database.
+        """
         self.current_season = 1
         self.last_seen_episode = 1
         self.is_next_episode_available = True

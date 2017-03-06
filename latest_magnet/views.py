@@ -42,8 +42,12 @@ def tvshow_page(request, title_url):
     page for a given TV Show.
     """
     tvshow = TVShow.objects.get(url=title_url)
+    # everytime a tv show is accessed we update it
+    tvshow.update_tvshow()
+
     if request.method == 'POST':
         if '_to_library' in request.POST:
             # redirect to library page
             return redirect('/latest_magnet')
+
     return render(request, 'latest_magnet/tvshow_page.html', {'tvshow': tvshow})
