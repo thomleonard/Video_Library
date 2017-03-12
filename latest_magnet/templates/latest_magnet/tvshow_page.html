@@ -4,12 +4,15 @@
     <title>TV Show page</title>
 </head>
 <body>
-    <h1>{{ tvshow.title }}</h1>
+    <h1>{{ tvshow.display_title }}</h1>
     <div id="content">
         <p> </p>
         here are the tv show details
-
         <p> </p>
+        {% load static %}
+        <img src={% static tvshow.primary_image %} alt="TV Show Poster">
+        <p> </p>
+
         <form action="" method="POST">
             {% csrf_token %}
             <input type="submit", value="Back to library", name='_to_library'>
