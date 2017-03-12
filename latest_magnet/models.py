@@ -100,13 +100,17 @@ def title_to_url(title):
 
 
 def requests_image(file_url, filename):
-    suffix_list = ['jpg', 'gif', 'png', 'tif', 'svg',]
-    file_suffix = file_url.split('.')[-1]
-    output_filename = filename + '.' + file_suffix
+    """
+    Retrieve a image file from a given url and save it at the target location.
+    It also returns it's extension.
+    """
+    suffix_list = ['.jpg', '.gif', '.png', '.tif', '.svg', '.jpeg']
+    file_suffix = '.' + file_url.split('.')[-1]
+    output_filename = filename + file_suffix
     i = requests.get(file_url)
     if file_suffix in suffix_list and i.status_code == requests.codes.ok:
         with iopen(output_filename, 'wb') as file:
             file.write(i.content)
-        return output_filename
+        return file_suffix
     else:
         return False
