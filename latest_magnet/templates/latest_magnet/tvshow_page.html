@@ -4,13 +4,17 @@
     <title>TV Show page</title>
 </head>
 <body>
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'latest_magnet/style.css' %}" />
+    <script type="text/javascript" src="{% static 'latest_magnet/tab.js' %}"></script>
+
     <h1>{{ tvshow.display_title }}</h1>
     <div id="content">
         <p> </p>
         here are the tv show details
         <p> </p>
-        {% load static %}
-        <img src={% static tvshow.primary_image %} alt="TV Show Poster">
+        <img src={{ tvshow.imdb_img_url }} alt={{ tvshow.display_title }}>
         <p> </p>
 
         <form action="" method="POST">

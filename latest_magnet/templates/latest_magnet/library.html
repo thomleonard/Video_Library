@@ -32,7 +32,9 @@
             <ul>
             {% for tvshow in tvshows %}
                 <li>
-                    <a href="/latest_magnet/tvshow_{{ tvshow.url }}_page/">{{ tvshow.display_title }}</a>
+                    <a href="/latest_magnet/tvshow_{{ tvshow.url }}_page/">
+                        <img class="HoverBorder" src={{ tvshow.imdb_img_url }} alt={{ tvshow.display_title }}}>
+                    </a>
                 </li>
             {% endfor %}
             </ul>

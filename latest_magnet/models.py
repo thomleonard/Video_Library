@@ -14,7 +14,7 @@ class TVShow(models.Model):
     url = models.CharField(max_length=100, unique=True)
     imdb_url = models.CharField(max_length=100, unique=True)
     display_title = models.CharField(max_length=100, unique=True)
-    primary_image = models.ImageField()
+    imdb_img_url = models.TextField(unique=True)
 
     current_season = models.PositiveIntegerField()
     last_seen_episode = models.PositiveIntegerField()
@@ -77,8 +77,7 @@ class TVShow(models.Model):
         try:
             result = re.finditer(imdb_img_url_regex, imdb_page).next()
             imdb_img_url = result.groupdict()['imdb_tvshow_image']
-            img_suffix = requests_image(imdb_img_url, 'latest_magnet/static/latest_magnet/thumbnails/' + self.url)
-            self.primary_image = 'latest_magnet/thumbnails/' + self.url + img_suffix
+            self.imdb_img_url = imdb_img_url
         except StopIteration:
             raise ValueError("Can't find %s tv show IMDB poster" % self.title)
 
