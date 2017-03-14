@@ -64,6 +64,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'builtins': [
+                'latest_magnet.templatetags.latest_magnet_extras',
+            ],
         },
     },
 ]
