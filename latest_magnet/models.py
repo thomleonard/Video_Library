@@ -12,9 +12,9 @@ class TVShow(models.Model):
     """
     title = models.CharField(max_length=100, unique=True)
     url = models.CharField(max_length=100, unique=True)
-    imdb_url = models.CharField(max_length=100, unique=True)
     display_title = models.CharField(max_length=100, unique=True)
-    imdb_img_url = models.TextField(unique=True)
+    imdb_url = models.TextField()
+    imdb_img_url = models.TextField()
 
     current_season = models.PositiveIntegerField()
     last_seen_episode = models.PositiveIntegerField()
