@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from . import views
 
-app_name = 'latest_magnet'
+app_name = 'Series'
 urlpatterns = [
     url(r'^$', views.library, name='library'),
     url(r'^tvshow_(?P<title_url>.+)_page/$',

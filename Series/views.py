@@ -24,7 +24,7 @@ def library(request):
                     tvshow.add_new(title)
                 else:
                     tvshow = TVShow.objects.get(title=title)
-                return redirect('/latest_magnet/tvshow_%s_page' % tvshow.url)
+                return redirect('/Series/tvshow_%s_page' % tvshow.url)
 
     form = SearchName()
 
@@ -32,7 +32,7 @@ def library(request):
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
     is_library_empty = len(update_ordered_tvshows) > 0
 
-    return render(request, 'latest_magnet/library.html', 
+    return render(request, 'Series/library.html', 
         {'form': form, 
          'tvshows': update_ordered_tvshows,
          'is_library_empty': is_library_empty})
@@ -48,6 +48,6 @@ def tvshow_page(request, title_url):
     if request.method == 'POST':
         if '_to_library' in request.POST:
             # redirect to library page
-            return redirect('/latest_magnet')
+            return redirect('/Series')
 
-    return render(request, 'latest_magnet/tvshow_page.html', {'tvshow': tvshow})
+    return render(request, 'Series/tvshow_page.html', {'tvshow': tvshow})
