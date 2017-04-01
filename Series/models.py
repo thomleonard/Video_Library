@@ -12,10 +12,10 @@ class TVShow(models.Model):
 
     """
     title = models.CharField(max_length=100, unique=True)
-    url = models.CharField(max_length=100, unique=True)
+    url = models.CharField(max_length=250, unique=True)
     display_title = models.CharField(max_length=100, unique=True)
-    imdb_url = models.TextField()
-    imdb_img_url = models.TextField()
+    imdb_url = models.CharField(max_length=1000, unique=True)
+    imdb_img_url = models.CharField(max_length=1000, unique=True)
 
     current_season = models.PositiveIntegerField()
     last_seen_episode = models.PositiveIntegerField()
@@ -107,7 +107,7 @@ class Season(models.Model):
     Season model:
 
     """
-    tvshow = models.ForeignKey(TVShow, related_name='tvshows', on_delete=models.CASCADE)
+    tvshow = models.ForeignKey(TVShow, related_name='seasons', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     active = models.BooleanField(default=True)
 
