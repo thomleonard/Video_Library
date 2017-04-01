@@ -6,7 +6,7 @@
 <body>
     {% load static %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'latest_magnet/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'Series/style.css' %}" />
 
     <h1>Welcome to the TV show search engine</h1>
     <div id="content">
@@ -32,7 +32,7 @@
             <ul>
             {% for tvshow in tvshows %}
                 <li>
-                    <a href="/latest_magnet/tvshow_{{ tvshow.url }}_page/">
+                    <a href="/Series/tvshow_{{ tvshow.url }}_page/">
                         <img class="HoverBorder" src={{ tvshow.imdb_img_url }} alt="{{ tvshow.display_title }}">
                     </a>
                 </li>
