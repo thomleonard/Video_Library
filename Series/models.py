@@ -12,7 +12,6 @@ class TVShow(models.Model):
 
     """
     title = models.CharField(max_length=100, unique=True)
-    url = models.CharField(max_length=250, unique=True)
     display_title = models.CharField(max_length=100, unique=True)
     imdb_url = models.CharField(max_length=1000, unique=True)
     imdb_img_url = models.CharField(max_length=1000, unique=True)
@@ -29,7 +28,6 @@ class TVShow(models.Model):
         add a new TV show to the database.
         """
         self.title = title.lower() # title must be only lower case
-        self.url = title_to_url(title)
         self.find_imdb_url() # find the IMDB tv show page url
         self.get_imdb_info() # retreive the information from the IMDB page
         self.update_tvshow() # update the TV show object (and save it)
@@ -139,13 +137,6 @@ class Episode(models.Model):
 
     def get_magnet_link(self):
         pass
-
-
-def title_to_url(title):
-    url = title.replace(' ', '+') # replace spaces by +
-    url = url.replace("'", "") # remove '
-    url = url.lower() # make sure it is only lower case
-    return url
 
 
 def requests_image(file_url, filename):

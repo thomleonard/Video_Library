@@ -32,7 +32,7 @@
             <ul>
             {% for tvshow in tvshows %}
                 <li>
-                    <a href="/Series/tvshow_{{ tvshow.url }}_page/">
+                    <a href="/Series/tvshow_{{ tvshow.pk }}/">
                         <img class="HoverBorder" src={{ tvshow.imdb_img_url }} alt="{{ tvshow.display_title }}">
                     </a>
                 </li>

@@ -24,7 +24,7 @@ def library(request):
                     tvshow.add_new(title)
                 else:
                     tvshow = TVShow.objects.get(title=title)
-                return redirect('/Series/tvshow_%s_page' % tvshow.url)
+                return redirect('/Series/tvshow_%s' % tvshow.pk)
 
     form = SearchName()
 
@@ -37,11 +37,11 @@ def library(request):
          'tvshows': update_ordered_tvshows,
          'is_library_empty': is_library_empty})
 
-def tvshow_page(request, title_url):
+def tvshow_page(request, tvshow_pk):
     """
     page for a given TV Show.
     """
-    tvshow = TVShow.objects.get(url=title_url)
+    tvshow = TVShow.objects.get(pk=tvshow_pk)
     # everytime a tv show is accessed we update it
     tvshow.update_tvshow()
 
