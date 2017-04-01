@@ -5,6 +5,7 @@ import requests
 import re
 from io import open as iopen
 
+
 class TVShow(models.Model):
     """
     TV show model:
@@ -90,6 +91,55 @@ class TVShow(models.Model):
         self.is_next_episode_available = True
         self.update_date = timezone.now()
         self.save()
+
+    def add_season(self):
+        """
+        Add a season to our TV show
+        """
+        season = Season()
+        season.number = self.seasons.count() + 1
+        season.save()
+        self.seasons.add(season)
+
+
+class Season(models.Model):
+    """
+    Season model:
+
+    """
+    tvshow = models.ForeignKey(TVShow, related_name='tvshows', on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    active = models.BooleanField(default=True)
+
+    def add_episode(self, name=None):
+        """
+        Add an episode to the season
+        """
+        episode = Episode()
+        episode.number = self.episodes.count() + 1
+        episode.name = name or episode.name
+        episode.save()
+        self.episodes.add(episode)
+
+    def all_seen(self):
+        """
+        set all episodes to seen
+        """
+        for episode in self.episodes.all():
+            episode.seen = True
+            episode.save()
+
+class Episode(models.Model):
+    season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    name = models.CharField(max_length=100, default='unknown', null=True)
+    seen = models.BooleanField(default=False)
+    available = models.BooleanField(default=False)
+    magnet_link = models.TextField()
+
+    def get_magnet_link(self):
+        pass
+
 
 def title_to_url(title):
     url = title.replace(' ', '+') # replace spaces by +

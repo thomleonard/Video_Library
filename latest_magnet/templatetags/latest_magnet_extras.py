@@ -15,6 +15,11 @@ def addstr(arg1, arg2):
 def do_captureas(parser, token):
 	"""
 	Capture content to re-use throughout a template.
+
+    {% captureas series_function %}
+        {{ 'openTab(event, "'|addstr:season.number|addstr:'")' }}
+    {% endcaptureas %}
+
 	"""
 	try:
 		tag_name, args = token.contents.split(None, 1)
