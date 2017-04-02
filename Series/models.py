@@ -6,8 +6,6 @@ import requests
 import re
 from io import open as iopen
 
-from imdb_scrapping import *
-
 
 class TVShow(models.Model):
     """
@@ -15,7 +13,6 @@ class TVShow(models.Model):
 
     """
     title = models.CharField(max_length=100, unique=True)
-    display_title = models.CharField(max_length=100, unique=True)
     info_url = models.CharField(max_length=1000, unique=True)
     poster_url = models.CharField(max_length=1000, unique=True)
 
@@ -30,23 +27,7 @@ class TVShow(models.Model):
         """
         Readable str output.
         """
-        return self.display_title
-
-    def add_new(self, title):
-        """
-        add a new TV show to the database.
-        """
-        self.title = title.lower() # title must be only lower case
-
-        # find the url where we can get all the tv show info
-        self.info_url = search_tvshow_url(title)
-
-        # retreive the information on the tv show
-        display_title, poster_url = get_tvshow_info(self.info_url)
-        self.display_title = display_title
-        self.poster_url = poster_url
-
-        self.update_tvshow() # update the TV show object (and save it)
+        return self.title
 
     def update_tvshow(self):
         """
@@ -88,7 +69,7 @@ class Season(models.Model):
         """
         Readable str output.
         """
-        str_output = self.tvshow.display_title
+        str_output = self.tvshow.title
         str_output += ' Season ' + str(self.number)
         return str_output
 
@@ -111,6 +92,7 @@ class Season(models.Model):
             episode.seen = True
             episode.save()
 
+
 class Episode(models.Model):
     season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
@@ -123,7 +105,7 @@ class Episode(models.Model):
         """
         Readable str output.
         """
-        str_output = self.season.tvshow.display_title
+        str_output = self.season.tvshow.title
         str_output += ' Season ' + str(self.season.number)
         str_output += ' Episode ' + str(self.number)  
         return str_output
