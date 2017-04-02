@@ -19,7 +19,7 @@
     <p> </p>
     here are the tv show details
     <p> </p>
-    <img src="{{ tvshow.imdb_img_url }}" alt="{{ tvshow.display_title }}">
+    <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.display_title }}">
     <p> </p>
 
     <!-- Return to library -->
@@ -28,41 +28,36 @@
         <input type="submit", value="Back to library">
     </form>
 
-<!-- TV Seasons tabs -->
-<div class="tab">
+{% if tvshows.seasons.all %}
+    <!-- TV Seasons tabs -->
+    <div class="tab">
+        <!-- loop on seasons -->
+        {% for season in tvshows.seasons.all %}
+            <button class="tablinks" 
+                onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" 
+                id="{{ 'season '|addstr:season.number }}|addstr: 'tab'">
+                {{ season.number }}
+            </button>
+        {% endfor %}
+    </div>
+    
+    <!-- TV Seasons tabs content -->
     {% for season in tvshows.seasons.all %}
-
-        <button class="tablinks" onclick={{ 'openTab(event, "'|addstr:season.number|addstr:'")' }} id="{{ 'season '|addstr:season.number }}|addstr: 'tab'">{{ season.number }}</button>
-
+        <div id="{{ 'season '|addstr:season.number }}|addstr: 'tab'" class="tabcontent">
+            <h3>Season {{ season.number }}</h3>
+            <p>
+                {% for episode in season.episodes.all %}
+                    epsiode {{ episode.number }} - {{ episode.name }}
+                    <br>
+                {% endfor %}
+            </p>
+        </div>
     {% endfor %}
-    <button class="tablinks" onclick="openTab(event, 'London')" id="london button">London</button>
-    <button class="tablinks" onclick="openTab(event, 'Paris')" id="paris button">Paris</button>
-    <button class="tablinks" onclick="openTab(event, 'Tokyo')" id="tokyo button">Tokyo</button>
-</div>
-
-<!-- TV Seasons tabs content -->
-<div id="London" class="tabcontent">
-
-    <h3>London</h3>
-    <p>{{ series_function }}</p>
-    <img src="/kakakak/"
-        alt="{{ tvshow.display_title|addstr:' banana'|addstr:' juice' }}"
-    />
-</div>
-
-<div id="Paris" class="tabcontent">
-    <h3>Paris</h3>
-    <p>Paris is the capital of France.</p> 
-</div>
-
-<div id="Tokyo" class="tabcontent">
-    <h3>Tokyo</h3>
-    <p>Tokyo is the capital of Japan.</p>
-</div>
-
-<script type="text/javascript">
-    $("paris button").trigger("click");
-</script>
+    
+    <script type="text/javascript">
+        $("paris button").trigger("click");
+    </script>
+{% endif %}
 
 </body>
 </html>

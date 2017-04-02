@@ -9,31 +9,31 @@ def library(request):
     TV show library and search page
     """
     if request.method == 'POST':
-        if '_clean' in request.POST:
-            # clean the database
-            #TVShow.objects.all().delete()
-            pass
-        else:
-            form = SearchName(request.POST)
-            if form.is_valid():
-                title = form['name'].value()
-                title = title.lower() # convert to lower case
-                # if the TV show is not already in the database
-                # add it otherwise get the existing one
-                if not TVShow.objects.filter(title=title).exists():
-                    tvshow = TVShow()
+        form = SearchName(request.POST)
+        if form.is_valid():
+            title = form['name'].value()
+            title = title.lower() # convert to lower case
+            # if the TV show is not already in the database
+            # add it otherwise get the existing one
+            if not TVShow.objects.filter(title=title).exists():
+                tvshow = TVShow()
+                try:
                     tvshow.add_new(title)
-                else:
-                    tvshow = TVShow.objects.get(title=title)
-                return redirect(tvshow)
-
-    form = SearchName()
+                except ValueError as error:
+                    # error in the web scrapping proccess
+                    template = 'Series/library.html'
+                    context = {'form': SearchName(), 
+                               'error_message': str(error)}
+                    return render(request, template, context)
+            else:
+                tvshow = TVShow.objects.get(title=title)
+            return redirect(tvshow)
 
     # create the library
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
 
     template = 'Series/library.html'
-    context = {'form': form, 
+    context = {'form': SearchName(), 
                'tvshows': update_ordered_tvshows}
     return render(request, template, context)
 
