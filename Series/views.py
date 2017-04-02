@@ -23,7 +23,7 @@ def library(request):
                     tvshow.add_new(title)
                 else:
                     tvshow = TVShow.objects.get(title=title)
-                return redirect('/Series/tvshow_%s' % tvshow.pk)
+                return redirect(tvshow)
 
     form = SearchName()
 
@@ -41,7 +41,7 @@ def tvshow_page(request, tvshow_pk):
     Page for a given TV Show.
     """
     # get the tvshow object if it exists, raise 404 error otherwise
-    get_object_or_404(TVShow, pk=tvshow_pk)
+    tvshow = get_object_or_404(TVShow, pk=tvshow_pk)
 
     # everytime a tv show is accessed we update it
     tvshow.update_tvshow()
@@ -49,7 +49,7 @@ def tvshow_page(request, tvshow_pk):
     if request.method == 'POST':
         if '_to_library' in request.POST:
             # redirect to library page
-            return redirect('/Series')
+            return redirect('Series:library')
 
     template = 'Series/tvshow_page.html'
     context = {'tvshow': tvshow}

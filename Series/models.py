@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 import requests
 import re
@@ -105,6 +106,12 @@ class TVShow(models.Model):
         season.tvshow = self
         season.save()
         self.seasons.add(season)
+
+    def get_absolute_url(self):
+        """
+        Return the TV show page url
+        """
+        return reverse('Series:tvshow_page', kwargs={'tvshow_pk':self.pk})
 
 
 class Season(models.Model):
