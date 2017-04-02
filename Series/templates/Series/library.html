@@ -11,19 +11,20 @@
 
     <!-- Search form -->
     <h1>Welcome to the TV show search engine</h1>
-    <div id="content">
-        <p> </p>
-        <form action="" method="POST">
-            {% csrf_token %}
-            TV Show title: {{ form.name }}
-            <input type="submit" value="Search" name="_search">
-        </form>
-        <p> </p>
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="submit", value="Empty library", name='_clean'>
-        </form>
-    </div>
+
+    <p> </p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        TV Show title: {{ form.name }}
+        <input type="submit" value="Search" name="_search">
+    </form>
+    <p> </p>
+
+    <!-- Empty the library -->
+    <form action="{% url 'Series:empty_library' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit", value="Empty library">
+    </form>
 
     <p> </p>
     <p> </p>
@@ -31,17 +32,15 @@
     <!-- Library list -->
     {% if tvshows %}
         <h3>Your TV shows library</h3>
-        <div id="content">
-            <ul>
-            {% for tvshow in tvshows %}
-                <li>
-                    <a href="{% url 'Series:tvshow_page' tvshow.pk %}">
-                        <img class="HoverBorder" src={{ tvshow.imdb_img_url }} alt="{{ tvshow.display_title }}">
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
+        <ul>
+        {% for tvshow in tvshows %}
+            <li>
+                <a href="{% url 'Series:tvshow_page' tvshow.pk %}">
+                    <img class="HoverBorder" src={{ tvshow.imdb_img_url }} alt="{{ tvshow.display_title }}">
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
     {% else %}
         <h3>Your library is empty</h3>
     {% endif %}

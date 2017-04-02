@@ -10,7 +10,8 @@ def library(request):
     if request.method == 'POST':
         if '_clean' in request.POST:
             # clean the database
-            TVShow.objects.all().delete()
+            #TVShow.objects.all().delete()
+            pass
         else:
             form = SearchName(request.POST)
             if form.is_valid():
@@ -36,9 +37,16 @@ def library(request):
     return render(request, template, context)
 
 
+def empty_library(request):
+    """
+    View to empty the TV show database.
+    """
+    TVShow.objects.all().delete()
+    return redirect('Series:library')
+
 def tvshow_page(request, tvshow_pk):
     """
-    Page for a given TV Show.
+    View for a given TV Show.
     """
     # get the tvshow object if it exists, raise 404 error otherwise
     tvshow = get_object_or_404(TVShow, pk=tvshow_pk)
