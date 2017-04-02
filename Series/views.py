@@ -1,5 +1,4 @@
-from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import SearchName
 from .models import TVShow
@@ -42,10 +41,7 @@ def tvshow_page(request, tvshow_pk):
     Page for a given TV Show.
     """
     # get the tvshow object if it exists, raise 404 error otherwise
-    try:
-        tvshow = TVShow.objects.get(pk=tvshow_pk)
-    except:
-        raise Http404('TV show is not in your library')
+    get_object_or_404(TVShow, pk=tvshow_pk)
 
     # everytime a tv show is accessed we update it
     tvshow.update_tvshow()
