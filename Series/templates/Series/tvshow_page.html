@@ -7,9 +7,13 @@
     {% load static %}
     {% load Series_extras %}
 
+    <!-- Load the CSS style sheet -->
     <link rel="stylesheet" type="text/css" href="{% static 'Series/style.css' %}" />
+
+    <!-- Load the javascript for tabs -->
     <script type="text/javascript" src="{% static 'Series/tab.js' %}"></script>
 
+    <!-- TV show details -->
     <h1>{{ tvshow.display_title }}</h1>
     <div id="content">
         <p> </p>
@@ -25,8 +29,8 @@
 
     </div>
 
+<!-- TV Seasons tabs -->
 <div class="tab">
-    <!-- Tabs -->
     {% for season in tvshows.seasons.all %}
 
         <button class="tablinks" onclick={{ 'openTab(event, "'|addstr:season.number|addstr:'")' }} id="{{ 'season '|addstr:season.number|addstr: 'tab' }}">{{ season.number }}</button>
@@ -37,6 +41,7 @@
     <button class="tablinks" onclick="openTab(event, 'Tokyo')" id="tokyo button">Tokyo</button>
 </div>
 
+<!-- TV Seasons tabs content -->
 <div id="London" class="tabcontent">
 
     <h3>London</h3>

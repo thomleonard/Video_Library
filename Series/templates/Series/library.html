@@ -6,8 +6,10 @@
 <body>
     {% load static %}
 
+    <!-- Load the CSS style sheet -->
     <link rel="stylesheet" type="text/css" href="{% static 'Series/style.css' %}" />
 
+    <!-- Search form -->
     <h1>Welcome to the TV show search engine</h1>
     <div id="content">
         <p> </p>
@@ -26,8 +28,9 @@
     <p> </p>
     <p> </p>
 
+    <!-- Library list -->
     {% if tvshows %}
-        <div id="header">Your TV shows library</div>
+        <h3>Your TV shows library</h3>
         <div id="content">
             <ul>
             {% for tvshow in tvshows %}
@@ -40,7 +43,7 @@
             </ul>
         </div>
     {% else %}
-        <div id="header">Your library is empty</div>
+        <h3>Your library is empty</h3>
     {% endif %}
 
 </body>
