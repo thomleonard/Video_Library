@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SearchName
 from .models import TVShow
 
+
 def library(request):
     """
     TV show library and search page
@@ -44,6 +45,7 @@ def empty_library(request):
     TVShow.objects.all().delete()
     return redirect('Series:library')
 
+
 def tvshow_page(request, tvshow_pk):
     """
     View for a given TV Show.
@@ -53,11 +55,6 @@ def tvshow_page(request, tvshow_pk):
 
     # everytime a tv show is accessed we update it
     tvshow.update_tvshow()
-
-    if request.method == 'POST':
-        if '_to_library' in request.POST:
-            # redirect to library page
-            return redirect('Series:library')
 
     template = 'Series/tvshow_page.html'
     context = {'tvshow': tvshow}

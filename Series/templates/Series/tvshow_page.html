@@ -15,25 +15,24 @@
 
     <!-- TV show details -->
     <h1>{{ tvshow.display_title }}</h1>
-    <div id="content">
-        <p> </p>
-        here are the tv show details
-        <p> </p>
-        <img src="{{ tvshow.imdb_img_url }}" alt="{{ tvshow.display_title }}">
-        <p> </p>
 
-        <form action="" method="POST">
-            {% csrf_token %}
-            <input type="submit", value="Back to library", name='_to_library'>
-        </form>
+    <p> </p>
+    here are the tv show details
+    <p> </p>
+    <img src="{{ tvshow.imdb_img_url }}" alt="{{ tvshow.display_title }}">
+    <p> </p>
 
-    </div>
+    <!-- Return to library -->
+    <form action="{% url 'Series:library' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit", value="Back to library">
+    </form>
 
 <!-- TV Seasons tabs -->
 <div class="tab">
     {% for season in tvshows.seasons.all %}
 
-        <button class="tablinks" onclick={{ 'openTab(event, "'|addstr:season.number|addstr:'")' }} id="{{ 'season '|addstr:season.number|addstr: 'tab' }}">{{ season.number }}</button>
+        <button class="tablinks" onclick={{ 'openTab(event, "'|addstr:season.number|addstr:'")' }} id="{{ 'season '|addstr:season.number }}|addstr: 'tab'">{{ season.number }}</button>
 
     {% endfor %}
     <button class="tablinks" onclick="openTab(event, 'London')" id="london button">London</button>
