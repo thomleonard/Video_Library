@@ -23,6 +23,12 @@ class TVShow(models.Model):
 
     update_date = models.DateTimeField(default=None)
 
+    def __str__(self):
+        """
+        Readable str output.
+        """
+        return self.display_title
+
     def add_new(self, title):
         """
         add a new TV show to the database.
@@ -109,6 +115,14 @@ class Season(models.Model):
     number = models.PositiveIntegerField()
     active = models.BooleanField(default=True)
 
+    def __str__(self):
+        """
+        Readable str output.
+        """
+        str_output = self.tvshow.display_title
+        str_output += ' Season ' + str(self.number)
+        return str_output
+
     def add_episode(self, name=None):
         """
         Add an episode to the season
@@ -134,6 +148,15 @@ class Episode(models.Model):
     seen = models.BooleanField(default=False)
     available = models.BooleanField(default=False)
     magnet_link = models.TextField()
+
+    def __str__(self):
+        """
+        Readable str output.
+        """
+        str_output = self.season.tvshow.display_title
+        str_output += ' Season ' + str(self.season.number)
+        str_output += ' Episode ' + str(self.number)  
+        return str_output
 
     def get_magnet_link(self):
         pass
