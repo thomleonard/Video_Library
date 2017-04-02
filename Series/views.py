@@ -32,10 +32,12 @@ def library(request):
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
     is_library_empty = len(update_ordered_tvshows) == 0
 
-    return render(request, 'Series/library.html', 
-        {'form': form, 
-         'tvshows': update_ordered_tvshows,
-         'is_library_empty': is_library_empty})
+    template = 'Series/library.html'
+    context = {'form': form, 
+        'tvshows': update_ordered_tvshows,
+        'is_library_empty': is_library_empty}
+    return render(request, template, context)
+
 
 def tvshow_page(request, tvshow_pk):
     """
@@ -50,4 +52,6 @@ def tvshow_page(request, tvshow_pk):
             # redirect to library page
             return redirect('/Series')
 
-    return render(request, 'Series/tvshow_page.html', {'tvshow': tvshow})
+    template = 'Series/tvshow_page.html'
+    context = {'tvshow': tvshow}
+    return render(request, template, context)
