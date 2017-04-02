@@ -102,6 +102,7 @@ class TVShow(models.Model):
         """
         season = Season()
         season.number = self.seasons.count() + 1
+        season.tvshow = self
         season.save()
         self.seasons.add(season)
 
@@ -130,6 +131,7 @@ class Season(models.Model):
         episode = Episode()
         episode.number = self.episodes.count() + 1
         episode.name = name or episode.name
+        episode.season = self
         episode.save()
         self.episodes.add(episode)
 
