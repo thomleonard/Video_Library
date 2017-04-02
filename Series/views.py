@@ -30,7 +30,7 @@ def library(request):
 
     # create the library
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
-    is_library_empty = len(update_ordered_tvshows) > 0
+    is_library_empty = len(update_ordered_tvshows) == 0
 
     return render(request, 'Series/library.html', 
         {'form': form, 
