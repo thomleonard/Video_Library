@@ -11,8 +11,7 @@ def library(request):
     if request.method == 'POST':
         if '_clean' in request.POST:
             # clean the database
-            for tvshow in TVShow.objects.all():
-                tvshow.delete()
+            TVShow.objects.all().delete()
         else:
             form = SearchName(request.POST)
             if form.is_valid():
