@@ -30,12 +30,10 @@ def library(request):
 
     # create the library
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
-    is_library_empty = len(update_ordered_tvshows) == 0
 
     template = 'Series/library.html'
     context = {'form': form, 
-        'tvshows': update_ordered_tvshows,
-        'is_library_empty': is_library_empty}
+               'tvshows': update_ordered_tvshows}
     return render(request, template, context)
 
 

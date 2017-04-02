@@ -26,9 +26,7 @@
     <p> </p>
     <p> </p>
 
-    {% if is_library_empty %}
-        <div id="header">Your library is empty</div>
-    {% else %}
+    {% if tvshows %}
         <div id="header">Your TV shows library</div>
         <div id="content">
             <ul>
@@ -41,6 +39,8 @@
             {% endfor %}
             </ul>
         </div>
+    {% else %}
+        <div id="header">Your library is empty</div>
     {% endif %}
 
 </body>
