@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TV Show page</title>
-</head>
-<body>
+{% extends 'Series/base.html' %}
+
+{% block content %}
+
     {% load static %}
     {% load Series_extras %}
-
-    <!-- Load the CSS style sheet -->
-    <link rel="stylesheet" type="text/css" href="{% static 'Series/style.css' %}" />
 
     <!-- Load the javascript for tabs -->
     <script type="text/javascript" src="{% static 'Series/tab.js' %}"></script>
@@ -26,55 +21,54 @@
         <input type="submit", value="Back to library">
     </form>
 
-{% if tvshow.seasons.all %}
-    <h3>Seasons {{ season.number }}</h3>
-
-    <!-- TV Seasons tabs -->
-    <div class="tab">
-        <!-- loop on seasons -->
-        {% for season in tvshow.seasons.all %}
-            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
-                {{ season.number }}
-            </button>
-        {% endfor %}
-    </div>
+    {% if tvshow.seasons.all %}
+        <h3>Seasons {{ season.number }}</h3>
     
-    <!-- TV Seasons tabs content -->
-    {% for season in tvshow.seasons.all %}
-        <div id="{{ season.number }}" class="tabcontent">
-            {% if season.episodes.all %}
-                <p>
-                    {% for episode in season.episodes.all %}
-                        <form action="{% url 'Series:seen' episode.pk %}" method="POST">
-                            {% csrf_token %}
-                            <!-- seen icon -->
-                            {% if episode.seen %}
-                                <input type="image" src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em">
-                            {% else %}
-                                <input type="image" src="{% static 'Series/not_seen_icon.png' %}" alt="seen" height="9em">
-                            {% endif %}
-                            <!-- episode number and name -->
-                            &nbsp episode {{ episode.number }} - {{ episode.name }} 
-                            <!-- airdate -->
-                            {% if episode.airdate %}
-                                - {{ episode.airdate }}
-                            {% endif %}
-                        </form>
-                    {% endfor %}
-                </p>
-            {% else %}
-                <p> No episodes found</p>
-            {% endif %}
+        <!-- TV Seasons tabs -->
+        <div class="tab">
+            <!-- loop on seasons -->
+            {% for season in tvshow.seasons.all %}
+                <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
+                    {{ season.number }}
+                </button>
+            {% endfor %}
         </div>
+        
+        <!-- TV Seasons tabs content -->
+        {% for season in tvshow.seasons.all %}
+            <div id="{{ season.number }}" class="tabcontent">
+                {% if season.episodes.all %}
+                    <p>
+                        {% for episode in season.episodes.all %}
+                            <form action="{% url 'Series:seen' episode.pk %}" method="POST">
+                                {% csrf_token %}
+                                <!-- seen icon -->
+                                {% if episode.seen %}
+                                    <input type="image" src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em">
+                                {% else %}
+                                    <input type="image" src="{% static 'Series/not_seen_icon.png' %}" alt="seen" height="9em">
+                                {% endif %}
+                                <!-- episode number and name -->
+                                &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                                <!-- airdate -->
+                                {% if episode.airdate %}
+                                    - {{ episode.airdate }}
+                                {% endif %}
+                            </form>
+                        {% endfor %}
+                    </p>
+                {% else %}
+                    <p> No episodes found</p>
+                {% endif %}
+            </div>
+    
+        {% endfor %}
+    
+        <!-- Set the active season -->
+        <script>
+            document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += " active";
+            document.getElementById("{{ tvshow.active_season }}").style.display = "block";
+        </script>
+    {% endif %}
 
-    {% endfor %}
-
-    <!-- Set the active season -->
-    <script>
-        document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += " active";
-        document.getElementById("{{ tvshow.active_season }}").style.display = "block";
-    </script>
-{% endif %}
-
-</body>
-</html>
+{% endblock content %}

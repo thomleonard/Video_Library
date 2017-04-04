@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TV Show search page</title>
-</head>
-<body>
-    {% load static %}
+{% extends 'Series/base.html' %}
 
-    <!-- Load the CSS style sheet -->
-    <link rel="stylesheet" type="text/css" href="{% static 'Series/style.css' %}" />
+{% block content %}
 
     <h1>Welcome to the TV show search engine</h1>
 
@@ -57,5 +50,5 @@
         {% endif %}
 
     {% endif %}
-</body>
-</html>
+
+{% endblock content %}

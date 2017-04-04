@@ -1,4 +1,9 @@
 
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
 /* image that highlight when hovering over */
 IMG.HoverBorder {
     outline: 1px solid transparent;
