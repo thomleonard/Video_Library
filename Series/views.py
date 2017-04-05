@@ -96,4 +96,8 @@ def episode_seen(request, episode_pk):
     # change the value of the episode
     episode.seen = not episode.seen
     episode.save()
+
+    # has to refresh the active season field
+    season.tvshow.set_active_season()
+
     return redirect(episode.season.tvshow)

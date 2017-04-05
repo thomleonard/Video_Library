@@ -16,6 +16,7 @@ class TVShow(models.Model):
         (title, poster, seasons) can be scrapped
         - poster_url is the URL of the poster image
 
+        - active_season
         - is_next_episode_available
         - next_episode_date
 
@@ -26,6 +27,7 @@ class TVShow(models.Model):
     info_url = models.CharField(max_length=1000, unique=True)
     poster_url = models.CharField(max_length=1000, unique=True)
 
+    active_season = models.PositiveIntegerField(default=1)
     is_next_episode_available = models.BooleanField(default=False)
     next_episode_date = models.DateField(default=None, null=True)
 
@@ -48,6 +50,7 @@ class TVShow(models.Model):
         self.update_date = timezone.now()
         self.save()
         self.update_seasons()
+        self.set_active_season()
 
     def update_seasons(self):
         """
@@ -73,6 +76,17 @@ class TVShow(models.Model):
             # update episode list of each season
             season.update_episodes()
 
+    def set_active_season(self):
+        for season in self.seasons.all():
+            for episode in season.episodes.all():
+                if not episode.seen:
+                    self.active_season = season.number
+                    self.save()
+                    return
+        # if it hasn't been set, set it to the last season
+        self.active_season = season.number
+        self.save()
+
     def get_absolute_url(self):
         """
         Return the TV show page url
@@ -86,13 +100,10 @@ class Season(models.Model):
         - tvshow
         - number
         - info_url is the URL where the seasons episodes information can be scrapped
-
-        - active
     """
     tvshow = models.ForeignKey(TVShow, related_name='seasons', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     info_url = models.CharField(max_length=1000, unique=True)
-    active = models.BooleanField(default=False)
 
     def __str__(self):
         """

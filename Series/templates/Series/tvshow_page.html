@@ -67,14 +67,13 @@
             {% endif %}
         </div>
 
-        <!-- Set the active season -->
-        {% if season.number == 1 %}
-            <script>
-                document.getElementById("{{ 'button '|addstr:season.number }}").className += " active";
-                document.getElementById("{{ season.number }}").style.display = "block";
-            </script>
-        {% endif %}
     {% endfor %}
+
+    <!-- Set the active season -->
+    <script>
+        document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += " active";
+        document.getElementById("{{ tvshow.active_season }}").style.display = "block";
+    </script>
 {% endif %}
 
 </body>
