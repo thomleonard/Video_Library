@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+
+from datetime import timedelta
 
 from .forms import SearchName
 from .models import TVShow, Episode
 
 from imdb_scrapping import search_tvshow_url, get_tvshow_info
-
 
 def library(request):
     """
@@ -22,16 +24,10 @@ def library(request):
                 # if the TV show is not already in the database
                 # add it otherwise get the existing one
                 if not TVShow.objects.filter(info_url=tvshow_url).exists():
-                    # get the TV show info
-                    title, poster_url = get_tvshow_info(tvshow_url)
                     tvshow = TVShow()
-                    tvshow.title = title
                     tvshow.info_url = tvshow_url
-                    tvshow.poster_url = poster_url
-                    # update and save it
-                    tvshow.update_tvshow() 
-                    # get the seasons/episodes info
-                    tvshow.update_seasons()
+                    # update tv show information and save it
+                    tvshow.update_info() 
                 else:
                     tvshow = TVShow.objects.get(info_url=tvshow_url)
             except ValueError as error:
@@ -44,7 +40,7 @@ def library(request):
                 return redirect(tvshow)
 
     # create the library
-    update_ordered_tvshows = TVShow.objects.order_by('-update_date')
+    update_ordered_tvshows = TVShow.objects.order_by('-last_watched')
 
     template = 'Series/library.html'
     context = {'form': SearchName(), 
@@ -67,8 +63,13 @@ def tvshow_page(request, tvshow_pk):
     # get the tvshow object if it exists, raise 404 error otherwise
     tvshow = get_object_or_404(TVShow, pk=tvshow_pk)
 
-    # everytime a tv show is accessed we update it
-    tvshow.update_tvshow()
+    # update the last watched field every time the tv show is accessed
+    tvshow.last_watched = timezone.now()
+    tvshow.save()
+
+    # check if the update date is more than 24hours
+    if (timezone.now() - tvshow.update_date) > timedelta(hours=24):
+        tvshow.update_info()
 
     template = 'Series/tvshow_page.html'
     context = {'tvshow': tvshow}

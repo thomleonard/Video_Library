@@ -6,7 +6,7 @@ import requests
 import re
 from io import open as iopen
 
-from imdb_scrapping import get_seasons_info, get_episodes_info
+from imdb_scrapping import get_tvshow_info, get_seasons_info, get_episodes_info
 
 class TVShow(models.Model):
     """
@@ -19,7 +19,8 @@ class TVShow(models.Model):
         - is_next_episode_available
         - next_episode_date
 
-        - update_date is the last time the user went on the TV show page
+        - last_watched is the last time the user went on the TV show page
+        - update_date is the last time the information have been retreived
     """
     title = models.CharField(max_length=100, unique=True)
     info_url = models.CharField(max_length=1000, unique=True)
@@ -29,6 +30,7 @@ class TVShow(models.Model):
     next_episode_date = models.DateField(default=None, null=True)
 
     update_date = models.DateTimeField(default=None)
+    last_watched = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         """
@@ -36,12 +38,16 @@ class TVShow(models.Model):
         """
         return self.title
 
-    def update_tvshow(self):
+    def update_info(self):
         """
         Update a TV show of the database.
         """
+        title, poster_url = get_tvshow_info(self.info_url)
+        self.title = title
+        self.poster_url = poster_url
         self.update_date = timezone.now()
         self.save()
+        self.update_seasons()
 
     def update_seasons(self):
         """
@@ -61,7 +67,6 @@ class TVShow(models.Model):
                 season.info_url = season_info['season_url']
                 season.save()
                 self.seasons.add(season)
-
             else:
                 season = self.seasons.get(number=season_info['season_number'])
 

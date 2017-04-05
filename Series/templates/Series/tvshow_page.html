@@ -21,7 +21,7 @@
     <p> </p>
 
     <!-- Return to library -->
-    <form action="{% url 'Series:library' %}" method="GET">
+    <form action="{% url 'Series:library' %}" method="POST">
         {% csrf_token %}
         <input type="submit", value="Back to library">
     </form>
@@ -45,7 +45,7 @@
             {% if season.episodes.all %}
                 <p>
                     {% for episode in season.episodes.all %}
-                        <form action="{% url 'Series:seen' episode.pk %}" method="GET">
+                        <form action="{% url 'Series:seen' episode.pk %}" method="POST">
                             {% csrf_token %}
                             <!-- seen icon -->
                             {% if episode.seen %}
