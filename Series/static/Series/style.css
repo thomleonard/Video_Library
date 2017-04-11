@@ -122,3 +122,7 @@ IMG.HoverBorder:hover {
     color: #404040;
     float: right;
 }
+
+.disabled-link {
+    color: #404040;
+}
