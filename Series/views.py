@@ -134,7 +134,8 @@ def episode_magnet(request, episode_pk):
 
 
     #return redirect(episode.season.tvshow)
-    template = 'Series/magnets.html'
-    context = {'episode': episode,
-               'magnets': episode.magnets.order_by('-seeds_number')}
+    template = 'Series/tvshow_page.html'
+    context = {'tvshow': episode.season.tvshow,
+               'dropdown_episode': episode.pk}
     return render(request, template, context)
+

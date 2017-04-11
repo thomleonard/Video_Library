@@ -134,6 +134,20 @@ IMG.HoverBorder:hover {
     color: #a6a6a6;
 }
 
+.magnet-update{
+    font-size: 1.1em;
+    line-height: 1.2em;
+    color: #a6a6a6;
+    margin-left: 0.2em;
+}
+
+.magnet-update:link,
+.magnet-update:visited,
+.magnet-update:hover,
+.magnet-update:active {
+    color: #a6a6a6;
+    text-decoration: none;
+}
 
 .enabled-icon {
     color: #a6a6a6;

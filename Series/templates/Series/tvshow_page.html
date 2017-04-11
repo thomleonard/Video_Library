@@ -25,7 +25,7 @@
                     <!-- TV Seasons tabs -->
                     <ul class="nav nav-tabs">
                         {% for season in tvshow.seasons.all %}
-                            <li id="season |addstr:{{ season.number }}">
+                            <li id="{{ 'season-'|addstr:season.number }}">
                                 <a data-toggle="tab" href="#{{ season.number }}">{{ season.number }}</a>
                             </li>
                         {% endfor %}
@@ -38,7 +38,7 @@
                             {% if season.episodes.all %}
                                 {% for episode in season.episodes.all %}
                                     <!-- if episode aired -->
-                                    {% if episode.airdate|timesince >= "1 sec" %}
+                                    {% if episode.airdate|older_than:"seconds=1" %}
 
                                         <!-- seen icon -->
                                         {% if episode.seen %}
@@ -49,18 +49,32 @@
                                         &nbsp
 
                                         <!-- episode number and name -->
-                                        <div class="btn-group">
-                                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              episode {{ episode.number }} - {{ episode.name }}
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a href="{% url 'Series:magnet' episode.pk %}">
-                                                        torrent view link
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        {% if episode.magnet_update is null or episode.magnet_update|older_than:"hours=24" %}
+                                            <!-- link that gonna refresh the magnets -->
+                                            <a href="{% url 'Series:magnet' episode.pk %}" class="magnet-update">
+                                                episode {{ episode.number }} - {{ episode.name }}
+                                            </a>
+                                        {% else %}
+                                            <!-- dropdown menu with the magnets -->
+                                            <div class="btn-group" id="{{ 'dropdown-menu-'|addstr:episode.pk }}">
+                                                <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    episode {{ episode.number }} - {{ episode.name }}
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    {% if episode.magnets.all %}
+                                                        {% for magnet in episode.magnets.all %}
+                                                            <li>
+                                                                <a href="{{ magnet.link }}" onclick="close_menu({{ episode.pk }})">
+                                                                    seeds {{ magnet.seeds_number }} - {{ magnet.file_name }} - {{ magnet.file_size }}
+                                                                </a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <li>No magnet found</li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
 
                                     {% else %}
                                         <!-- seen icon -->
@@ -91,8 +105,16 @@
 
                     <!-- Set the active season -->
                     <script>
-                        document.getElementById("season |addstr:{{ tvshow.active_season }}").className = "active";
-                        document.getElementById("{{ tvshow.active_season }}").className = "tab-pane active";
+                        document.getElementById("season-" + {{ tvshow.active_season }}).className = "active";
+                        document.getElementById({{ tvshow.active_season }}).className = "tab-pane active";
+                        {% if dropdown_episode %}
+                            document.getElementById("dropdown-menu-" + {{ dropdown_episode }}).className += " open";
+                        {% endif %}
+
+                        function close_menu(episode_pk) {
+                            // close the dropdown menu on click
+                            document.getElementById("dropdown-menu-" + episode_pk).className += "btn-group";
+                        }
                     </script>
                 </div>
             {% endif %}
