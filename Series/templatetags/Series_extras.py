@@ -19,6 +19,9 @@ def older_than(date, delta):
     """
     returns true or false depending on the delta between the date and now.    
     """
+    if date is None:
+        # if the date is None consider that it is not older than anything
+        return False
     if isinstance(date, datetime.datetime):
         # if the date is a datetime
         time_delta = timezone.now() - date
