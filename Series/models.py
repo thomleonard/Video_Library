@@ -163,8 +163,8 @@ class Episode(models.Model):
         - airdate
 
         - seen
-        - available
         - magnet_link
+        - magnet_update
     """
 
     season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
@@ -173,8 +173,8 @@ class Episode(models.Model):
     airdate = models.DateField(default=None, null=True)
 
     seen = models.BooleanField(default=False)
-    available = models.BooleanField(default=False)
     magnet_link = models.CharField(max_length=1000, default='')
+    magnet_update = models.DateTimeField(default=None, null=True)
 
     def __str__(self):
         """
@@ -203,6 +203,8 @@ class Episode(models.Model):
                 magnet = self.magnets.get(link=magnet_info['magnet_link'])
                 magnet.seeds_number = magnet_info['seeds_number']
                 magnet.save()
+        self.magnet_update = timezone.now()
+        self.save()
 
 
 class Magnet(models.Model):
@@ -229,6 +231,9 @@ class Magnet(models.Model):
         str_output += ' Season ' + str(self.episode.season.number)
         str_output += ' Episode ' + str(self.episode.number)  
         return str_output
+
+    class Meta:
+        ordering = ['-seeds_number']
 
 
 def requests_image(file_url, filename):
