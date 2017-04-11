@@ -34,40 +34,55 @@
                     <!-- TV Seasons tabs content -->
                     <div class="tab-content">
                         {% for season in tvshow.seasons.all %}
-                        <div id="{{ season.number }}" class="tab-pane">
+                        <div class="tab-pane" id="{{ season.number }}">
                             {% if season.episodes.all %}
-                                <p>
-                                    {% for episode in season.episodes.all %}
+                                {% for episode in season.episodes.all %}
+                                    <!-- if episode aired -->
+                                    {% if episode.airdate|timesince >= "1 sec" %}
+
                                         <!-- seen icon -->
                                         {% if episode.seen %}
-                                            <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+                                            <a href="{% url 'Series:seen' episode.pk %}" class="enabled-icon seen glyphicon glyphicon-eye-open" aria-hidden="true"></a>
                                         {% else %}
-                                            <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></a>
+                                            <a href="{% url 'Series:seen' episode.pk %}" class="enabled-icon notseen glyphicon glyphicon-eye-close" aria-hidden="true"></a>
                                         {% endif %}
                                         &nbsp
 
                                         <!-- episode number and name -->
-                                        {% if episode.airdate|timesince >= "1 min"  %}
-                                            <a href="{% url 'Series:magnet' episode.pk %}">
-                                                episode {{ episode.number }} - {{ episode.name }}
-                                            </a>
-                                        {% else %}
-                                            <span class="disabled-link">
-                                                episode {{ episode.number }} - {{ episode.name }}
-                                            </span>
-                                        {% endif %}
+                                        <div class="btn-group">
+                                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              episode {{ episode.number }} - {{ episode.name }}
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="{% url 'Series:magnet' episode.pk %}">
+                                                        torrent view link
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                        <!-- airdate -->
-                                        {% if episode.airdate %}
-                                            <span class="airdate-right">
-                                                {{ episode.airdate }}
-                                            </span>
-                                        {% endif %}
-                                        <br>
-                                    {% endfor %}
-                                </p>
+                                    {% else %}
+                                        <!-- seen icon -->
+                                        <span class="disabled-icon glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                                        &nbsp
+
+                                        <!-- episode number and name -->
+                                        <span class="disabled-link">
+                                            episode {{ episode.number }} - {{ episode.name }}
+                                        </span>
+                                    {% endif %}
+
+                                    <!-- airdate -->
+                                    {% if episode.airdate %}
+                                        <span class="airdate-right">
+                                            {{ episode.airdate }}
+                                        </span>
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
                             {% else %}
-                                <p> No episodes found</p>
+                                <p>No episodes found</p>
                             {% endif %}
                         </div>
                         {% endfor %}

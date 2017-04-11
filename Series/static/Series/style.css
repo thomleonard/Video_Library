@@ -123,6 +123,41 @@ IMG.HoverBorder:hover {
     float: right;
 }
 
-.disabled-link {
+/* -------------------------------------------- */
+/* Episode dropdown menu for torrent list */
+/* -------------------------------------------- */
+.tab-content .tab-pane .btn-group .dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    color: #a6a6a6;
+}
+
+
+.enabled-icon {
+    color: #a6a6a6;
+}
+
+.notseen {
     color: #404040;
+}
+
+.enabled-icon:link,
+.enabled-icon:visited,
+.enabled-icon:hover,
+.enabled-icon:active {
+    text-decoration: none;
+}
+
+.disabled-icon {
+    color: #404040;
+    opacity: 0.3;
+}
+
+.disabled-link {
+    font-size: 1.1em;
+    line-height: 1.2em;
+    color: #404040;
+    margin-left: 0.15em;
 }
