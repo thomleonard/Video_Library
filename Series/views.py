@@ -80,6 +80,19 @@ def episode_seen(request, episode_pk):
     """
     # get the episode object if it exists, raise 404 error otherwise
     episode = get_object_or_404(Episode, pk=episode_pk)
+    
+    # if we set an episode to seen, we set all the previous one too
+    if not episode.seen:
+        season = episode.season
+        # in the same season
+        for previous_episode in season.episodes.filter(number__lt=episode.number):
+            previous_episode.seen = True
+            previous_episode.save()
+        # in previous season
+        for previous_season in season.tvshow.seasons.filter(number__lt=season.number):
+            previous_season.all_seen()
+
+    # change the value of the episode
     episode.seen = not episode.seen
     episode.save()
     return redirect(episode.season.tvshow)
