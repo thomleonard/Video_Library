@@ -28,35 +28,34 @@
         <input type="submit", value="Back to library">
     </form>
 
-{% if tvshows.seasons.all %}
+{% if tvshow.seasons.all %}
+    <h3>Seasons {{ season.number }}</h3>
+
     <!-- TV Seasons tabs -->
     <div class="tab">
         <!-- loop on seasons -->
-        {% for season in tvshows.seasons.all %}
-            <button class="tablinks" 
-                onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" 
-                id="{{ 'season '|addstr:season.number }}|addstr: 'tab'">
+        {% for season in tvshow.seasons.all %}
+            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}">
                 {{ season.number }}
             </button>
         {% endfor %}
     </div>
     
     <!-- TV Seasons tabs content -->
-    {% for season in tvshows.seasons.all %}
-        <div id="{{ 'season '|addstr:season.number }}|addstr: 'tab'" class="tabcontent">
-            <h3>Season {{ season.number }}</h3>
-            <p>
-                {% for episode in season.episodes.all %}
-                    epsiode {{ episode.number }} - {{ episode.name }}
-                    <br>
-                {% endfor %}
-            </p>
+    {% for season in tvshow.seasons.all %}
+        <div id="{{ season.number }}" class="tabcontent">
+            {% if season.episodes.all %}
+                <p>
+                    {% for episode in season.episodes.all %}
+                        episode {{ episode.number }} - {{ episode.name }}
+                        <br>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p> No episodes found</p>
+            {% endif %}
         </div>
     {% endfor %}
-    
-    <script type="text/javascript">
-        $("paris button").trigger("click");
-    </script>
 {% endif %}
 
 </body>
