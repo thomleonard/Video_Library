@@ -102,6 +102,8 @@ class Season(models.Model):
                 episode.season = self
                 episode.number = episode_info['episode_number']
                 episode.name = episode_info['episode_name']
+                if episode_info['episode_airdate']:
+                    episode.airdate = episode_info['episode_airdate']
                 episode.save()
                 self.episodes.add(episode)
 
@@ -123,6 +125,7 @@ class Episode(models.Model):
     season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     name = models.CharField(max_length=100, default='unknown', null=True)
+    airdate = models.DateField(default=None, null=True)
 
     seen = models.BooleanField(default=False)
     available = models.BooleanField(default=False)

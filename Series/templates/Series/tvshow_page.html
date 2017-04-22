@@ -47,7 +47,10 @@
             {% if season.episodes.all %}
                 <p>
                     {% for episode in season.episodes.all %}
-                        episode {{ episode.number }} - {{ episode.name }}
+                        episode {{ episode.number }} - {{ episode.name }} 
+                        {% if episode.airdate %}
+                            - {{ episode.airdate }}
+                        {% endif %}
                         <br>
                     {% endfor %}
                 </p>
