@@ -2,15 +2,6 @@
 
 {% block content %}
 
-    <!-- Search form -->
-    <p> </p>
-    <form action="" method="POST">
-        {% csrf_token %}
-        TV Show title: {{ form.name }}
-        <input type="submit" value="Search" name="_search">
-    </form>
-    <p> </p>
-
     {% if error_message %}
         <!-- Error catch -->
         <p><strong>{{ error_message }}</strong></p>

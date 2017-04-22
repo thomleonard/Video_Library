@@ -1,4 +1,7 @@
 
+/* -------------------------------------------- */
+/* Body */
+/* -------------------------------------------- */
 body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: #efeff9;
@@ -10,7 +13,9 @@ body {
     /*color: white;*/
 }
 
+/* -------------------------------------------- */
 /* Brand */
+/* -------------------------------------------- */
 .brand {
     display: inherit;
     margin: 0;
@@ -24,28 +29,15 @@ body {
     color: white;
 }
 
+/* -------------------------------------------- */
 /* Nav bar */
-.navbar-default {
+/* -------------------------------------------- */
+.navbar {
     border: none;
+    border-radius: 0;
     background: white;
     opacity: 0.7;
 }
-
-.nav>li>a {
-    padding: 25px;
-}
-.navbar-nav>li>a,
-.navbar-nav>li>a:link
-{
-    line-height: normal;
-    color: black;    
-}
-.navbar-nav>li>a:hover,
-.navbar-nav>li>a:focus
-{
-    color: blue;
-}
-
 .navbar-nav {
     display: table;
     float: none;
@@ -54,8 +46,26 @@ body {
     font-size: 1.25em;
 }
 
+/* Navigation links */
+.navbar-nav>li>a {
+    padding: 25px;
+}
+.navbar-nav>li>a,
+.navbar-nav>li>a:link,
+.navbar-nav>li>a:visited{
+    line-height: normal;
+    color: #a00000;    
+}
 
+/* Search form*/
+.navbar-nav>li>form {
+    padding-top: 12px;
+    padding-right: 0px;
+}
+
+/* -------------------------------------------- */
 /* image that highlight when hovering over */
+/* -------------------------------------------- */
 IMG.HoverBorder {
     outline: 1px solid transparent;
     outline-offset: 1px;
@@ -68,6 +78,9 @@ IMG.HoverBorder:hover {
 }
 
 
+/* -------------------------------------------- */
+/* Tabs */
+/* -------------------------------------------- */
 
 /* Style the tab */
 div.tab {

@@ -6,46 +6,47 @@ from datetime import timedelta
 from .forms import SearchName
 from .models import TVShow, Episode
 
-from imdb_scrapping import search_tvshow_url, get_tvshow_info
+from imdb_scrapping import search_tvshow_url
+
 
 def library(request):
     """
-    TV show library and search page
+    TV show library page
     """
-    if request.method == 'POST':
-        # Search request
-        form = SearchName(request.POST)
-        if form.is_valid():
-            title = form['name'].value()
-            try:
-                # get TV show infos
-                tvshow_url = search_tvshow_url(title)
-
-                # if the TV show is not already in the database
-                # add it otherwise get the existing one
-                if not TVShow.objects.filter(info_url=tvshow_url).exists():
-                    tvshow = TVShow()
-                    tvshow.info_url = tvshow_url
-                    # update tv show information and save it
-                    tvshow.update_info() 
-                else:
-                    tvshow = TVShow.objects.get(info_url=tvshow_url)
-            except ValueError as error:
-                # error in the web scrapping proccess
-                template = 'Series/library.html'
-                context = {'form': SearchName(), 
-                           'error_message': str(error)}
-                return render(request, template, context)
-            else:
-                return redirect(tvshow)
-
     # create the library
     update_ordered_tvshows = TVShow.objects.order_by('-last_watched')
 
     template = 'Series/library.html'
-    context = {'form': SearchName(), 
-               'tvshows': update_ordered_tvshows}
+    context = {'tvshows': update_ordered_tvshows}
     return render(request, template, context)
+
+
+def search(request):
+    """
+    TV show library search page
+    """
+    title = request.GET['search_input']
+
+    try:
+        # get TV show infos
+        tvshow_url = search_tvshow_url(title)
+
+        # if the TV show is not already in the database
+        # add it otherwise get the existing one
+        if not TVShow.objects.filter(info_url=tvshow_url).exists():
+            tvshow = TVShow()
+            tvshow.info_url = tvshow_url
+            # update tv show information and save it
+            tvshow.update_info() 
+        else:
+            tvshow = TVShow.objects.get(info_url=tvshow_url)
+    except ValueError as error:
+        # error in the web scrapping proccess
+        template = 'Series/library.html'
+        context = {'error_message': str(error)}
+        return render(request, template, context)
+    else:
+        return redirect(tvshow)
 
 
 def empty_library(request):
@@ -109,4 +110,5 @@ def upcoming(request):
     View to show the upcoming TV show episodes.
     """
     # do something
+
     return redirect('Series:library')

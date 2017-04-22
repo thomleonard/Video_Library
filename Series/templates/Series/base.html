@@ -20,24 +20,27 @@
 
     </head>
     <body>
-        <div class="brand">Magnetic Theater</div>
+        <div class="brand">
+            Magnetic Theater
+        </div>
 
         <!-- Navigation -->
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
+                
+                <div class="collapse navbar-collapse">
+                    <!-- Navigation links -->
+                    <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="{% url 'Series:library' %}">Library</a>
                         </li>
@@ -45,13 +48,33 @@
                             <a href="{% url 'Series:upcoming' %}">Upcoming</a>
                         </li>
                     </ul>
+
+                    <!-- Search form -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <form class="navbar-search navbar-form" action="{% url 'Series:search' %}" method="GET" role="search">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="TV show search" name="search_input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
         </nav>
-
 
         {% block content %}
 
         {% endblock content %}
     </body>
 </html>
+
+
+
+

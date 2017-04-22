@@ -8,8 +8,11 @@ app_name = 'Series'
 
 urlpatterns = [
 
-    # TV Shows library and search page
+    # TV Shows library
     url(r'^$', views.library, name='library'),
+
+    # TV Shows search page
+    url(r'^search/$', views.search, name='search'),
 
     # empty the TV Shows library
     url(r'^empty_library/$', views.empty_library, name='empty_library'),
