@@ -107,3 +107,13 @@ IMG.HoverBorder:hover {
 /* -------------------------------------------- */
 /* Tabs */
 /* -------------------------------------------- */
+.tab-pane {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.7em;
+    font-size: 1.15em;
+    line-height: 1.5em;
+}
+.nav-tabs {
+    margin-top: -0.5em;
+    font-size: 1.2em;
+}
