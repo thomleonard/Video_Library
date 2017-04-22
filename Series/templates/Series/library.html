@@ -27,14 +27,14 @@
         <!-- Return to library -->
         <form action="{% url 'Series:library' %}" method="POST">
             {% csrf_token %}
-            <input type="submit", value="Back to library">
+            <input type="submit" value="Back to library">
         </form>
 
     {% else %}
         <!-- Empty the library -->
         <form action="{% url 'Series:empty_library' %}" method="POST">
             {% csrf_token %}
-            <input type="submit", value="Empty library">
+            <input type="submit" value="Empty library">
         </form>
     
         <p> </p>
