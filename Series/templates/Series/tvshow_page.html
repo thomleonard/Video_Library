@@ -34,21 +34,24 @@
                 {% if season.episodes.all %}
                     <p>
                         {% for episode in season.episodes.all %}
-                            <form action="{% url 'Series:seen' episode.pk %}" method="POST">
-                                {% csrf_token %}
-                                <!-- seen icon -->
-                                {% if episode.seen %}
-                                    <input type="image" src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em">
-                                {% else %}
-                                    <input type="image" src="{% static 'Series/not_seen_icon.png' %}" alt="seen" height="9em">
-                                {% endif %}
-                                <!-- episode number and name -->
-                                &nbsp episode {{ episode.number }} - {{ episode.name }} 
-                                <!-- airdate -->
-                                {% if episode.airdate %}
-                                    - {{ episode.airdate }}
-                                {% endif %}
-                            </form>
+                            <!-- seen icon -->
+                            {% if episode.seen %}
+                                <a href="{% url 'Series:seen' episode.pk %}">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </a>
+                                
+                            {% else %}
+                                <a href="{% url 'Series:seen' episode.pk %}">
+                                    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                                </a>
+                            {% endif %}
+                            <!-- episode number and name -->
+                            &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                            <!-- airdate -->
+                            {% if episode.airdate %}
+                                - {{ episode.airdate }}
+                            {% endif %}
+                            <br>
                         {% endfor %}
                     </p>
                 {% else %}
