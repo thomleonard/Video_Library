@@ -1,0 +1,35 @@
+{% extends 'Series/base.html' %}
+
+{% block content %}
+
+    {% if error_message %}
+        <!-- Error catch -->
+        <p><strong>{{ error_message }}</strong></p>
+
+    {% else %}
+    
+        <!-- Upcoming episode list -->
+        {% if upcoming_episodes %}
+            <h3>Upcoming episodes</h3>
+            {% for episode_group in upcoming_episodes %}
+                    {{ episode_group.0.airdate }}
+                    <hr class="airdate-hr">
+                    <ul>
+                    {% for episode in episode_group %}
+                        <li>
+                            <a href="{% url 'Series:tvshow_page' episode.season.tvshow.pk %}">
+                                {{ episode.season.tvshow.title }} - Season {{ episode.season.number }} Episode {{ episode.number }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <br>
+            {% endfor %}
+
+        {% else %}
+            <h3>No upcoming episodes</h3>
+        {% endif %}
+
+    {% endif %}
+
+{% endblock content %}

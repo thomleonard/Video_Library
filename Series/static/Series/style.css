@@ -10,7 +10,7 @@ body {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    /*color: white;*/
+    color: #a6a6a6;
 }
 
 /* -------------------------------------------- */
@@ -64,7 +64,7 @@ body {
 }
 
 /* -------------------------------------------- */
-/* image that highlight when hovering over */
+/* Image that highlight when hovering over */
 /* -------------------------------------------- */
 IMG.HoverBorder {
     outline: 1px solid transparent;
@@ -75,6 +75,18 @@ IMG.HoverBorder:hover {
     outline: 1px solid #a8c9ff;
     outline-offset: 1px;
     opacity: 0.97;
+}
+
+/* -------------------------------------------- */
+/* Horizontal line under the airdate in upcoming page */
+/* -------------------------------------------- */
+.airdate-hr {
+    margin-top: 0em;
+    margin-bottom: 0.5em;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #404040;
+    opacity: 0.5;
 }
 
 

@@ -3,7 +3,6 @@ from django.utils import timezone
 
 from datetime import timedelta
 
-from .forms import SearchName
 from .models import TVShow, Episode
 
 from imdb_scrapping import search_tvshow_url
@@ -13,7 +12,7 @@ def library(request):
     """
     TV show library page
     """
-    # create the library
+    # get the TV shows by their last watched order
     update_ordered_tvshows = TVShow.objects.order_by('-last_watched')
 
     template = 'Series/library.html'
@@ -23,7 +22,7 @@ def library(request):
 
 def search(request):
     """
-    TV show library search page
+    TV show search page
     """
     title = request.GET['search_input']
 
@@ -109,6 +108,17 @@ def upcoming(request):
     """
     View to show the upcoming TV show episodes.
     """
-    # do something
+    # get all the episodes which airdate is today or after
+    upcoming_episodes = Episode.objects.filter(airdate__gte=timezone.now()).order_by('airdate')
+    grouped_episodes = []
+    if len(upcoming_episodes) > 0:
+        grouped_episodes.append([upcoming_episodes[0], ])
+        for episode in upcoming_episodes[1:]:
+            if episode.airdate == grouped_episodes[-1][0].airdate:
+                grouped_episodes[-1].append(episode)
+            else:
+                grouped_episodes.append([episode, ])
 
-    return redirect('Series:library')
+    template = 'Series/upcoming.html'
+    context = {'upcoming_episodes': grouped_episodes}
+    return render(request, template, context)
