@@ -14,7 +14,7 @@
             {% for episode_group in upcoming_episodes %}
                     {{ episode_group.0.airdate }}
                     <hr class="airdate-hr">
-                    <ul>
+                    <ul style="list-style: none;">
                     {% for episode in episode_group %}
                         <li>
                             <a href="{% url 'Series:tvshow_page' episode.season.tvshow.pk %}">
