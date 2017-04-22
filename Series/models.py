@@ -128,7 +128,8 @@ class Season(models.Model):
                 episode = Episode()
                 episode.season = self
                 episode.number = episode_info['episode_number']
-                episode.name = episode_info['episode_name']
+                if episode_info['episode_name']:
+                    episode.name = episode_info['episode_name']
                 if episode_info['episode_airdate']:
                     episode.airdate = episode_info['episode_airdate']
                 episode.save()

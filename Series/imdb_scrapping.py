@@ -146,4 +146,9 @@ def get_episodes_info(season):
             # remove dot and convert it to a proper datetime object
             airdate = episode_info['episode_airdate'].replace('.', '')
             episode_info['episode_airdate'] = datetime.strptime(airdate, '%d %b %Y')
+
+        if episode_info['episode_name'].startswith("Episode #"):
+            # unknown name of episode yet
+            episode_info['episode_name'] = None
+
     return episodes_info
