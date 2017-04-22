@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SearchName
 from .models import TVShow
 
-from imdb_scrapping import *
+from imdb_scrapping import search_tvshow_url, get_tvshow_info
+
 
 def library(request):
     """
@@ -14,29 +15,33 @@ def library(request):
         form = SearchName(request.POST)
         if form.is_valid():
             title = form['name'].value()
-            
-            # get TV show infos
             try:
+                # get TV show infos
                 tvshow_url = search_tvshow_url(title)
-                display_title, poster_url = get_tvshow_info(tvshow_url)
+
+                # if the TV show is not already in the database
+                # add it otherwise get the existing one
+                if not TVShow.objects.filter(info_url=tvshow_url).exists():
+                    # get the TV show info
+                    title, poster_url = get_tvshow_info(tvshow_url)
+                    tvshow = TVShow()
+                    tvshow.title = title
+                    tvshow.info_url = tvshow_url
+                    tvshow.poster_url = poster_url
+                    # update and save it
+                    tvshow.update_tvshow() 
+                    # get the seasons/episodes info
+                    tvshow.update_seasons()
+                else:
+                    tvshow = TVShow.objects.get(title=tvshow.title)
             except ValueError as error:
                 # error in the web scrapping proccess
                 template = 'Series/library.html'
                 context = {'form': SearchName(), 
                            'error_message': str(error)}
                 return render(request, template, context)
-
-            # if the TV show is not already in the database
-            # add it otherwise get the existing one
-            if not TVShow.objects.filter(title=display_title).exists():
-                tvshow = TVShow()
-                tvshow.title = display_title
-                tvshow.info_url = tvshow_url
-                tvshow.poster_url = poster_url
-                tvshow.update_tvshow() # update and save
             else:
-                tvshow = TVShow.objects.get(title=display_title)
-            return redirect(tvshow)
+                return redirect(tvshow)
 
     # create the library
     update_ordered_tvshows = TVShow.objects.order_by('-update_date')
