@@ -33,7 +33,7 @@
     <div class="tab">
         <!-- loop on seasons -->
         {% for season in tvshow.seasons.all %}
-            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}">
+            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
                 {{ season.number }}
             </button>
         {% endfor %}
@@ -66,6 +66,14 @@
                 <p> No episodes found</p>
             {% endif %}
         </div>
+
+        <!-- Set the active season -->
+        {% if season.number == 1 %}
+            <script>
+                document.getElementById("{{ 'button '|addstr:season.number }}").className += " active";
+                document.getElementById("{{ season.number }}").style.display = "block";
+            </script>
+        {% endif %}
     {% endfor %}
 {% endif %}
 
