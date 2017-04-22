@@ -1,0 +1,24 @@
+{% extends 'Series/base.html' %}
+
+{% block content %}
+    
+    <!-- Magnet list -->
+    {% if magnets %}
+        <h3>Magnets for {{ episode.season.tvshow.title }} Season {{ episode.season.number }} Episode {{ episode.number }}</h3>
+        <ul style="list-style: none;">
+            {% for magnet in magnets %}
+                <li>
+                    <a href="{{ magnet.link }}">
+                        {{ magnet.file_name }} - {{ magnet.file_size }} - {{ magnet.seeds_number }}
+
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <h3>No Magnets found for {{ episode.season.tvshow.title }} Season {{ episode.season.number }} Episode {{ episode.number }</h3>
+    {% endif %}
+
+
+{% endblock content %}

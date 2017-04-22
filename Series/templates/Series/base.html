@@ -73,9 +73,18 @@
             </div>
         </nav>
 
-        {% block content %}
+        {% if error_message %}
+            <!-- Error catch -->
+            <p><strong>{{ error_message }}</strong></p>
+    
+        {% else %}
 
-        {% endblock content %}
+            {% block content %}
+    
+            {% endblock content %}
+    
+        {% endif %}
+
     </body>
 </html>
 

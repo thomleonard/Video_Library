@@ -41,12 +41,14 @@
                                         <!-- seen icon -->
                                         {% if episode.seen %}
                                             <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
-                                            
                                         {% else %}
                                             <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></a>
                                         {% endif %}
+                                        &nbsp 
                                         <!-- episode number and name -->
-                                        &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                                        <a href="{% url 'Series:magnet' episode.pk %}">
+                                            episode {{ episode.number }} - {{ episode.name }} 
+                                        </a>
                                         <!-- airdate -->
                                         {% if episode.airdate %}
                                             <span class="airdate-right">

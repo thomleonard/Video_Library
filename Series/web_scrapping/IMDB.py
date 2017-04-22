@@ -90,24 +90,50 @@ def get_seasons_info(tvshow):
         - page url
     Each season episode info extraction is not performed.
     """
-    try:
-        imdb_page = requests.get(tvshow.info_url).text
+    tvshow_url = re.sub('/\?ref_=(.*)', '', tvshow.info_url)
+    episodes_page_url = tvshow_url + '/episodes'
+
+    try:        
+        imdb_page = requests.get(episodes_page_url).text
     except requests.exceptions.RequestException:
         raise ValueError("Can't connect to IMDB %s info page" % tvshow.title)
 
-    imdb_season_regex = '<a href="(?P<season_url>/title/[^<>]+/episodes\?season=[^<>]+)"\n>(?P<season_number>\d+)</a>&nbsp;&nbsp;'
+    # regex for scrolling down menu of season
+    seasons_menu_regex = '<div class="episode-list-select">\n'
+    seasons_menu_regex += '  <div>\n'
+    seasons_menu_regex += '    <label for="bySeason">Season:</label>\n'
+    seasons_menu_regex += '    <select id="bySeason" tconst="[^<>]+" class="current">\n'
+    seasons_menu_regex = '((?:'
+    seasons_menu_regex += '      <\!--\n'
+    seasons_menu_regex += "      This ensures that we don't wind up accidentally marking two options\n"
+    seasons_menu_regex += '      \(Unknown and the blank one\) as selected.\n'
+    seasons_menu_regex += '      -->\n'
+    seasons_menu_regex += '      <option (?:selected="selected"|) value="\d+">\n'
+    seasons_menu_regex += '        \d+\n'
+    seasons_menu_regex += '      </option>\n)+?)'
+    seasons_menu_regex += '    </select>\n'
+    seasons_menu_regex += '  </div>\n'
 
-    # get the seasons number and urls
+    # regex of the actual season numbers in this menu
+    season_num_regex = '      <option (?:selected="selected"|) value="\d+">\n'
+    season_num_regex += '        (?P<season_number>\d+)\n'
+    season_num_regex += '      </option>\n'
+
     try:
-        seasons_info = [season_info.groupdict() for season_info in re.finditer(imdb_season_regex, imdb_page)][::-1]
+        # get the scroll menu
+        seasons_menu = re.search(seasons_menu_regex, imdb_page).groups()[0]
+        print seasons_menu
+
+        # get the season numbers from this menu
+        seasons_info = []
+        for season_number_match in re.finditer(season_num_regex, seasons_menu):
+            season_info = season_number_match.groupdict()
+            season_info['season_url'] = episodes_page_url + '?season=%s' % season_info['season_number']
+            seasons_info.append(season_info)
     except:
         raise ValueError("An error occured in the seasons search on IMDB for tvshow %s" % tvshow.title)
     if len(seasons_info) == 0:
         raise ValueError("Can't find any seasons on IMDB for tvshow %s" % tvshow.title)
-
-    # url is a relative url
-    for season_info in seasons_info:
-        season_info['season_url'] = 'http://www.imdb.com' + season_info['season_url']
 
     return seasons_info
 

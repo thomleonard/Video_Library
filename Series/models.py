@@ -6,7 +6,9 @@ import requests
 import re
 from io import open as iopen
 
-from imdb_scrapping import get_tvshow_info, get_seasons_info, get_episodes_info
+from web_scrapping.IMDB import get_tvshow_info, get_seasons_info, get_episodes_info
+from web_scrapping.EZTV import get_episode_magnet
+
 
 class TVShow(models.Model):
     """
@@ -137,7 +139,10 @@ class Season(models.Model):
 
             else:
                 episode = self.episodes.get(number=episode_info['episode_number'])
-                episode.name = episode_info['episode_name']
+                if episode_info['episode_name']:
+                    episode.name = episode_info['episode_name']
+                if episode_info['episode_airdate']:
+                    episode.airdate = episode_info['episode_airdate']
                 episode.save()
 
     def all_seen(self):
@@ -180,8 +185,50 @@ class Episode(models.Model):
         str_output += ' Episode ' + str(self.number)  
         return str_output
 
-    def get_magnet_link(self):
-        pass
+    def get_magnets(self):
+        magnets_info = get_episode_magnet(self)
+
+        for magnet_info in magnets_info:
+            if not self.magnets.filter(link=magnet_info['magnet_link']).exists():
+                magnet = Magnet()
+                magnet.episode = self
+                magnet.link = magnet_info['magnet_link']
+                magnet.file_name = magnet_info['file_name']
+                magnet.file_size = magnet_info['file_size']
+                magnet.seeds_number = magnet_info['seeds_number']
+    
+                magnet.save()
+                self.magnets.add(magnet)
+            else:
+                magnet = self.magnets.get(link=magnet_info['magnet_link'])
+                magnet.seeds_number = magnet_info['seeds_number']
+                magnet.save()
+
+
+class Magnet(models.Model):
+    """
+    Magnet model:
+        - episode
+        - link
+        - file_name
+        - file_size
+        - seeds_number
+    """
+
+    episode = models.ForeignKey(Episode, related_name='magnets', on_delete=models.CASCADE)
+    link = models.CharField(max_length=1000, default='', unique=True)
+    file_name = models.CharField(max_length=100, default='')
+    file_size = models.CharField(max_length=100, default='unknown')
+    seeds_number = models.PositiveIntegerField()
+
+    def __str__(self):
+        """
+        Readable str output.
+        """
+        str_output = self.episode.season.tvshow.title
+        str_output += ' Season ' + str(self.episode.season.number)
+        str_output += ' Episode ' + str(self.episode.number)  
+        return str_output
 
 
 def requests_image(file_url, filename):

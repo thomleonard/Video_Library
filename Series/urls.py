@@ -28,4 +28,8 @@ urlpatterns = [
     url(r'^seen_(?P<episode_pk>\d+)/$',
     	views.episode_seen, name='seen'),
 
+    # episode seen view
+    url(r'^magnet_(?P<episode_pk>\d+)/$',
+        views.episode_magnet, name='magnet'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

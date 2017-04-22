@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from .models import TVShow, Episode
 
-from imdb_scrapping import search_tvshow_url
+from web_scrapping.IMDB import search_tvshow_url
 
 
 def library(request):
@@ -41,7 +41,7 @@ def search(request):
             tvshow = TVShow.objects.get(info_url=tvshow_url)
     except ValueError as error:
         # error in the web scrapping proccess
-        template = 'Series/library.html'
+        template = 'Series/base.html'
         context = {'error_message': str(error)}
         return render(request, template, context)
     else:
@@ -121,4 +121,20 @@ def upcoming(request):
 
     template = 'Series/upcoming.html'
     context = {'upcoming_episodes': grouped_episodes}
+    return render(request, template, context)
+
+
+def episode_magnet(request, episode_pk):
+    """
+    View to search for an episode magnet link.
+    """
+    # get the episode object if it exists, raise 404 error otherwise
+    episode = get_object_or_404(Episode, pk=episode_pk)
+    episode.get_magnets()
+
+
+    #return redirect(episode.season.tvshow)
+    template = 'Series/magnets.html'
+    context = {'episode': episode,
+               'magnets': episode.magnets.order_by('-seeds_number')}
     return render(request, template, context)
