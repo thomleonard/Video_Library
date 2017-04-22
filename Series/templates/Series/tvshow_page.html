@@ -8,64 +8,74 @@
     <!-- Load the javascript for tabs -->
     <script type="text/javascript" src="{% static 'Series/tab.js' %}"></script>
 
-    <!-- TV show details -->
-    <h1>{{ tvshow.title }}</h1>
+    <div class="container-fluid">
+        <!-- TV show details -->
+        <h1>{{ tvshow.title }}</h1>
+        <br>
 
-    <p> </p>
-    <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}" />
-    <p> </p>
-
-    {% if tvshow.seasons.all %}
-        <h3>Seasons {{ season.number }}</h3>
-    
-        <!-- TV Seasons tabs -->
-        <div class="tab">
-            <!-- loop on seasons -->
-            {% for season in tvshow.seasons.all %}
-                <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
-                    {{ season.number }}
-                </button>
-            {% endfor %}
-        </div>
-        
-        <!-- TV Seasons tabs content -->
-        {% for season in tvshow.seasons.all %}
-            <div id="{{ season.number }}" class="tabcontent">
-                {% if season.episodes.all %}
-                    <p>
-                        {% for episode in season.episodes.all %}
-                            <!-- seen icon -->
-                            {% if episode.seen %}
-                                <a href="{% url 'Series:seen' episode.pk %}">
-                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                </a>
-                                
-                            {% else %}
-                                <a href="{% url 'Series:seen' episode.pk %}">
-                                    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                                </a>
-                            {% endif %}
-                            <!-- episode number and name -->
-                            &nbsp episode {{ episode.number }} - {{ episode.name }} 
-                            <!-- airdate -->
-                            {% if episode.airdate %}
-                                - {{ episode.airdate }}
-                            {% endif %}
-                            <br>
-                        {% endfor %}
-                    </p>
-                {% else %}
-                    <p> No episodes found</p>
-                {% endif %}
+        <div class="row">
+            
+            <!-- Thumbnail -->
+            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-2">
+                <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}"/>
+                <p> </p>
             </div>
-    
-        {% endfor %}
-    
-        <!-- Set the active season -->
-        <script>
-            document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += " active";
-            document.getElementById("{{ tvshow.active_season }}").style.display = "block";
-        </script>
-    {% endif %}
+
+            <!-- Seasons -->
+            {% if tvshow.seasons.all %}
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
+                
+                    <!-- TV Seasons tabs -->
+                    <div class="tab">
+                        <!-- loop on seasons -->
+                        {% for season in tvshow.seasons.all %}
+                            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
+                                {{ season.number }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- TV Seasons tabs content -->
+                    {% for season in tvshow.seasons.all %}
+                        <div id="{{ season.number }}" class="tabcontent">
+                            {% if season.episodes.all %}
+                                <p>
+                                    {% for episode in season.episodes.all %}
+                                        <!-- seen icon -->
+                                        {% if episode.seen %}
+                                            <a href="{% url 'Series:seen' episode.pk %}">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true">  </span>
+                                            </a>
+                                            
+                                        {% else %}
+                                            <a href="{% url 'Series:seen' episode.pk %}">
+                                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"  ></span>
+                                            </a>
+                                        {% endif %}
+                                        <!-- episode number and name -->
+                                        &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                                        <!-- airdate -->
+                                        {% if episode.airdate %}
+                                            - {{ episode.airdate }}
+                                        {% endif %}
+                                        <br>
+                                    {% endfor %}
+                                </p>
+                            {% else %}
+                                <p> No episodes found</p>
+                            {% endif %}
+                        </div>
+            
+                    {% endfor %}
+            
+                    <!-- Set the active season -->
+                    <script>
+                        document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += "   active";
+                        document.getElementById("{{ tvshow.active_season }}").style.display = "block";
+                    </script>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock content %}
