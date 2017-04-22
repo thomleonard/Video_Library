@@ -15,12 +15,6 @@
         <!-- Error catch -->
         <p><strong>{{ error_message }}</strong></p>
 
-        <!-- Return to library -->
-        <form action="{% url 'Series:library' %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="Back to library">
-        </form>
-
     {% else %}
         <!-- Empty the library -->
         <form action="{% url 'Series:empty_library' %}" method="POST">

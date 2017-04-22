@@ -14,6 +14,9 @@ urlpatterns = [
     # empty the TV Shows library
     url(r'^empty_library/$', views.empty_library, name='empty_library'),
 
+    # show the upcoming TV Show episodes from the library
+    url(r'^upcoming/$', views.upcoming, name='upcoming'),
+
     # TV Show page
     url(r'^tvshow_(?P<tvshow_pk>\d+)/$',
     	views.tvshow_page, name='tvshow_page'),

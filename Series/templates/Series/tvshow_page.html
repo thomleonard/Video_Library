@@ -15,12 +15,6 @@
     <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}" />
     <p> </p>
 
-    <!-- Return to library -->
-    <form action="{% url 'Series:library' %}" method="POST">
-        {% csrf_token %}
-        <input type="submit", value="Back to library">
-    </form>
-
     {% if tvshow.seasons.all %}
         <h3>Seasons {{ season.number }}</h3>
     

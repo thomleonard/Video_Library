@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}TV Shows Library{% endblock title %}</title>
+        <title>{% block title %}Magnetic Theater{% endblock title %}</title>
         
         {% load static %}
 
@@ -20,7 +20,7 @@
 
     </head>
     <body>
-        <div class="brand">TV Shows Library</div>
+        <div class="brand">Magnetic Theater</div>
 
         <!-- Navigation -->
         <nav class="navbar navbar-default" role="navigation">
@@ -39,16 +39,10 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="index.html">Home</a>
+                            <a href="{% url 'Series:library' %}">Library</a>
                         </li>
                         <li>
-                            <a href="about.html">About</a>
-                        </li>
-                        <li>
-                            <a href="blog.html">Blog</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">Contact</a>
+                            <a href="{% url 'Series:upcoming' %}">Upcoming</a>
                         </li>
                     </ul>
                 </div>

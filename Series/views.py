@@ -75,6 +75,7 @@ def tvshow_page(request, tvshow_pk):
     context = {'tvshow': tvshow}
     return render(request, template, context)
 
+
 def episode_seen(request, episode_pk):
     """
     View to change the seen status of an episode.
@@ -101,3 +102,11 @@ def episode_seen(request, episode_pk):
     season.tvshow.set_active_season()
 
     return redirect(episode.season.tvshow)
+
+
+def upcoming(request):
+    """
+    View to show the upcoming TV show episodes.
+    """
+    # do something
+    return redirect('Series:library')
