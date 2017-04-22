@@ -5,9 +5,6 @@
     {% load static %}
     {% load Series_extras %}
 
-    <!-- Load the javascript for tabs -->
-    <script type="text/javascript" src="{% static 'Series/tab.js' %}"></script>
-
     <div class="container-fluid">
         <!-- TV show details -->
         <h1>{{ tvshow.title }}</h1>
@@ -26,52 +23,53 @@
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
                 
                     <!-- TV Seasons tabs -->
-                    <div class="tab">
-                        <!-- loop on seasons -->
+                    <ul class="nav nav-tabs">
                         {% for season in tvshow.seasons.all %}
-                            <button class="tablinks" onclick="{{ 'openTab(event, '|addstr:season.number|addstr:')' }}" id="{{ 'button '|addstr:season.number }}">
-                                {{ season.number }}
-                            </button>
+                            <li id="season |addstr:{{ season.number }}">
+                                <a data-toggle="tab" href="#{{ season.number }}">{{ season.number }}</a>
+                            </li>
                         {% endfor %}
-                    </div>
+                    </ul>
                     
                     <!-- TV Seasons tabs content -->
-                    {% for season in tvshow.seasons.all %}
-                        <div id="{{ season.number }}" class="tabcontent">
-                            {% if season.episodes.all %}
-                                <p>
-                                    {% for episode in season.episodes.all %}
-                                        <!-- seen icon -->
-                                        {% if episode.seen %}
-                                            <a href="{% url 'Series:seen' episode.pk %}">
-                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true">  </span>
-                                            </a>
-                                            
-                                        {% else %}
-                                            <a href="{% url 'Series:seen' episode.pk %}">
-                                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"  ></span>
-                                            </a>
-                                        {% endif %}
-                                        <!-- episode number and name -->
-                                        &nbsp episode {{ episode.number }} - {{ episode.name }} 
-                                        <!-- airdate -->
-                                        {% if episode.airdate %}
-                                            - {{ episode.airdate }}
-                                        {% endif %}
-                                        <br>
-                                    {% endfor %}
-                                </p>
-                            {% else %}
-                                <p> No episodes found</p>
-                            {% endif %}
-                        </div>
-            
-                    {% endfor %}
-            
+                    <div class="tab-content">
+                        {% for season in tvshow.seasons.all %}
+                        <div id="{{ season.number }}" class="tab-pane">
+                                {% if season.episodes.all %}
+                                    <p>
+                                        {% for episode in season.episodes.all %}
+                                            <!-- seen icon -->
+                                            {% if episode.seen %}
+                                                <a href="{% url 'Series:seen' episode.pk %}">
+                                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true">  </span>
+                                                </a>
+                                                
+                                            {% else %}
+                                                <a href="{% url 'Series:seen' episode.pk %}">
+                                                    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"  ></span>
+                                                </a>
+                                            {% endif %}
+                                            <!-- episode number and name -->
+                                            &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                                            <!-- airdate -->
+                                            {% if episode.airdate %}
+                                                - {{ episode.airdate }}
+                                            {% endif %}
+                                            <br>
+                                        {% endfor %}
+                                    </p>
+                                {% else %}
+                                    <p> No episodes found</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+
                     <!-- Set the active season -->
                     <script>
-                        document.getElementById("{{ 'button '|addstr:tvshow.active_season }}").className += "   active";
-                        document.getElementById("{{ tvshow.active_season }}").style.display = "block";
+                        document.getElementById("season |addstr:{{ tvshow.active_season }}").className = "active";
+                        document.getElementById("{{ tvshow.active_season }}").className = "tab-pane active";
                     </script>
                 </div>
             {% endif %}
