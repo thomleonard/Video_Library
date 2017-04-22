@@ -40,14 +40,10 @@
                                     {% for episode in season.episodes.all %}
                                         <!-- seen icon -->
                                         {% if episode.seen %}
-                                            <a href="{% url 'Series:seen' episode.pk %}">
-                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true">  </span>
-                                            </a>
+                                            <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true">  </span></a>
                                             
                                         {% else %}
-                                            <a href="{% url 'Series:seen' episode.pk %}">
-                                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"  ></span>
-                                            </a>
+                                            <a href="{% url 'Series:seen' episode.pk %}"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"  ></span></a>
                                         {% endif %}
                                         <!-- episode number and name -->
                                         &nbsp episode {{ episode.number }} - {{ episode.name }} 

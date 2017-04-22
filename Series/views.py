@@ -84,8 +84,8 @@ def episode_seen(request, episode_pk):
     episode = get_object_or_404(Episode, pk=episode_pk)
     
     # if we set an episode to seen, we set all the previous one too
+    season = episode.season
     if not episode.seen:
-        season = episode.season
         # in the same season
         for previous_episode in season.episodes.filter(number__lt=episode.number):
             previous_episode.seen = True
