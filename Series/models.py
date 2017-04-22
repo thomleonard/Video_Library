@@ -29,7 +29,6 @@ class TVShow(models.Model):
 
     active_season = models.PositiveIntegerField(default=1)
     is_next_episode_available = models.BooleanField(default=False)
-    next_episode_date = models.DateField(default=None, null=True)
 
     update_date = models.DateTimeField(default=None)
     last_watched = models.DateTimeField(default=timezone.now)
