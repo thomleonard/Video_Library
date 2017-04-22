@@ -122,7 +122,6 @@ def get_seasons_info(tvshow):
     try:
         # get the scroll menu
         seasons_menu = re.search(seasons_menu_regex, imdb_page).groups()[0]
-        print seasons_menu
 
         # get the season numbers from this menu
         seasons_info = []
