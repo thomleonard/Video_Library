@@ -80,9 +80,6 @@ def episode_seen(request, episode_pk):
     """
     # get the episode object if it exists, raise 404 error otherwise
     episode = get_object_or_404(Episode, pk=episode_pk)
-    if episode.seen:
-        episode.seen = False
-    else:
-        episode.seen = True
+    episode.seen = not episode.seen
     episode.save()
     return redirect(episode.season.tvshow)

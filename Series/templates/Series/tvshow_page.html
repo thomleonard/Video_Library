@@ -45,22 +45,21 @@
             {% if season.episodes.all %}
                 <p>
                     {% for episode in season.episodes.all %}
-                        <!-- seen icon -->
-                        <a href="{% url 'Series:seen' episode.pk %}">
+                        <form action="{% url 'Series:seen' episode.pk %}" method="POST">
+                            {% csrf_token %}
+                            <!-- seen icon -->
                             {% if episode.seen %}
-                                <img src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em" width="auto" />
+                                <input type="image" src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em">
                             {% else %}
-                                <img src="{% static 'Series/not_seen_icon.png' %}" alt="not seen" height="9em" width="auto" />
+                                <input type="image" src="{% static 'Series/not_seen_icon.png' %}" alt="seen" height="9em">
                             {% endif %}
-                        </a>
-
-                        <!-- episode number and name -->
-                        &nbsp episode {{ episode.number }} - {{ episode.name }} 
-                        <!-- airdate -->
-                        {% if episode.airdate %}
-                            - {{ episode.airdate }}
-                        {% endif %}
-                        <br>
+                            <!-- episode number and name -->
+                            &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                            <!-- airdate -->
+                            {% if episode.airdate %}
+                                - {{ episode.airdate }}
+                            {% endif %}
+                        </form>
                     {% endfor %}
                 </p>
             {% else %}
