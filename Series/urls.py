@@ -18,4 +18,8 @@ urlpatterns = [
     url(r'^tvshow_(?P<tvshow_pk>\d+)/$',
     	views.tvshow_page, name='tvshow_page'),
 
+    # episode seen view
+    url(r'^seen_(?P<episode_pk>\d+)/$',
+    	views.episode_seen, name='seen'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import SearchName
-from .models import TVShow
+from .models import TVShow, Episode
 
 from imdb_scrapping import search_tvshow_url, get_tvshow_info
 
@@ -73,3 +73,16 @@ def tvshow_page(request, tvshow_pk):
     template = 'Series/tvshow_page.html'
     context = {'tvshow': tvshow}
     return render(request, template, context)
+
+def episode_seen(request, episode_pk):
+    """
+    View to change the seen status of an episode.
+    """
+    # get the episode object if it exists, raise 404 error otherwise
+    episode = get_object_or_404(Episode, pk=episode_pk)
+    if episode.seen:
+        episode.seen = False
+    else:
+        episode.seen = True
+    episode.save()
+    return redirect(episode.season.tvshow)

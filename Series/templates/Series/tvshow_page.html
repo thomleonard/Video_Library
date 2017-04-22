@@ -17,7 +17,7 @@
     <h1>{{ tvshow.title }}</h1>
 
     <p> </p>
-    <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}">
+    <img src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}" />
     <p> </p>
 
     <!-- Return to library -->
@@ -45,7 +45,18 @@
             {% if season.episodes.all %}
                 <p>
                     {% for episode in season.episodes.all %}
-                        episode {{ episode.number }} - {{ episode.name }} 
+                        <!-- seen icon -->
+                        <a href="{% url 'Series:seen' episode.pk %}">
+                            {% if episode.seen %}
+                                <img src="{% static 'Series/seen_icon.png' %}" alt="seen" height="9em" width="auto" />
+                            {% else %}
+                                <img src="{% static 'Series/not_seen_icon.png' %}" alt="not seen" height="9em" width="auto" />
+                            {% endif %}
+                        </a>
+
+                        <!-- episode number and name -->
+                        &nbsp episode {{ episode.number }} - {{ episode.name }} 
+                        <!-- airdate -->
                         {% if episode.airdate %}
                             - {{ episode.airdate }}
                         {% endif %}
