@@ -10,7 +10,7 @@ Functions available:
 
 import requests
 import re
-
+from datetime import datetime
 
 def search_tvshow_url(title):
     """
@@ -137,4 +137,13 @@ def get_episodes_info(season):
     if len(episodes_info) == 0:
         raise ValueError("Can't find any episodes on IMDB for season %s of %s" % (season.number, season.tvshow.title))
 
+    for episode_info in episodes_info:
+        if len(episode_info['episode_airdate']) == 4:
+            # year only
+            episode_info['episode_airdate'] = None
+        else:
+            # full date :
+            # remove dot and convert it to a proper datetime object
+            airdate = episode_info['episode_airdate'].replace('.', '')
+            episode_info['episode_airdate'] = datetime.strptime(airdate, '%d %b %Y')
     return episodes_info
