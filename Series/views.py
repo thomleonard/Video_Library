@@ -33,7 +33,7 @@ def library(request):
                     # get the seasons/episodes info
                     tvshow.update_seasons()
                 else:
-                    tvshow = TVShow.objects.get(title=tvshow.title)
+                    tvshow = TVShow.objects.get(info_url=tvshow_url)
             except ValueError as error:
                 # error in the web scrapping proccess
                 template = 'Series/library.html'
