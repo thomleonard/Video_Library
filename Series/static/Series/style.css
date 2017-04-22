@@ -67,12 +67,12 @@ body {
 /* Image that highlight when hovering over */
 /* -------------------------------------------- */
 IMG.HoverBorder {
-    outline: 1px solid transparent;
+    outline: 1px solid #282828;
     outline-offset: 1px;
 }
 
 IMG.HoverBorder:hover {
-    outline: 1px solid #a8c9ff;
+    outline: 1px solid #565656;
     outline-offset: 1px;
     opacity: 0.97;
 }
@@ -89,6 +89,20 @@ IMG.HoverBorder:hover {
     opacity: 0.5;
 }
 
+/* -------------------------------------------- */
+/* Thumbnail grid for Library */
+/* -------------------------------------------- */
+.thumbnail {
+    background: none;
+    border: none;
+    margin-left: -0.7em;
+    margin-right: -0.7em;
+    margin-bottom: 1em;
+    margin-top: 0em;
+}
+.caption {
+    text-align: center;
+}
 
 /* -------------------------------------------- */
 /* Tabs */

@@ -17,20 +17,30 @@
         <p> </p>
     
         <!-- Library list -->
-        {% if tvshows %}
-            <h3>Your TV shows library</h3>
-            <ul>
-            {% for tvshow in tvshows %}
-                <li>
-                    <a href="{% url 'Series:tvshow_page' tvshow.pk %}">
-                        <img class="HoverBorder" src={{ tvshow.poster_url }} alt="{{ tvshow.title }}">
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <h3>Your library is empty</h3>
-        {% endif %}
+        <div class="container-fluid">
+            {% if tvshows %}
+                <h3>Your TV shows library</h3>
+                <br>
+                <div class="row">
+                    {% for tvshow in tvshows %}
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+
+                            <a class="thumbnail" href="{% url 'Series:tvshow_page' tvshow.pk %}">
+                                <img class="HoverBorder" src="{{ tvshow.poster_url }}" alt="{{ tvshow.title }}">
+                                <!--
+                                <div class="caption">
+                                    <h3>{{ tvshow.title }}</h3>
+                                </div> 
+                                -->
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <h3>Your library is empty</h3>
+            {% endif %}
+        </div>
 
     {% endif %}
 
