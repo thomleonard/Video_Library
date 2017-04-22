@@ -11,7 +11,15 @@ from imdb_scrapping import get_seasons_info, get_episodes_info
 class TVShow(models.Model):
     """
     TV show model:
+        - title
+        - info_url is the URL where the information needed on the TV show
+        (title, poster, seasons) can be scrapped
+        - poster_url is the URL of the poster image
 
+        - is_next_episode_available
+        - next_episode_date
+
+        - update_date is the last time the user went on the TV show page
     """
     title = models.CharField(max_length=100, unique=True)
     info_url = models.CharField(max_length=1000, unique=True)
@@ -70,7 +78,11 @@ class TVShow(models.Model):
 class Season(models.Model):
     """
     Season model:
+        - tvshow
+        - number
+        - info_url is the URL where the seasons episodes information can be scrapped
 
+        - active
     """
     tvshow = models.ForeignKey(TVShow, related_name='seasons', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
@@ -122,6 +134,18 @@ class Season(models.Model):
 
 
 class Episode(models.Model):
+    """
+    Season model:
+        - season
+        - number
+        - name
+        - airdate
+
+        - seen
+        - available
+        - magnet_link
+    """
+
     season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     name = models.CharField(max_length=100, default='unknown', null=True)
